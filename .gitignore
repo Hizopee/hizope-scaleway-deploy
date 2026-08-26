@@ -1,0 +1,4 @@
+# Ne jamais committer les vrais secrets — seuls les .env.example sont trackés
+.env
+gaia-vps/.env
+shared-vps/.env

@@ -1,0 +1,3 @@
+CREATE DATABASE "GaiaDb";
+CREATE DATABASE cmicrolocks;
+CREATE DATABASE "LoveListDb";

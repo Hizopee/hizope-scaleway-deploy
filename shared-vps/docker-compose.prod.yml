@@ -1,0 +1,46 @@
+# VPS partagée entre les petits projets — CMicrolocks (+ LoveList plus tard).
+# Gaia est volontairement à part (voir ../gaia-vps/) pour pouvoir la scaler
+# ou la gérer indépendamment si l'appli prend.
+services:
+  cmicrolocks-api:
+    build:
+      context: ../../CMicrolocks/CMicrolocks-backend/CMicrolocks
+      dockerfile: CMicrolocks/Dockerfile
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__Default: ${CMICROLOCKS_DB_CONNECTION}
+      Jwt__Key: ${CMICROLOCKS_JWT_KEY}
+    expose:
+      - "8080"
+
+  lovelist-api:
+    build:
+      context: ../../LoveList/LoveList-backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__Default: ${LOVELIST_DB_CONNECTION}
+      # Ajoute ici les clés externes (TMDB, OMDB, IGDB, Google Books,
+      # Open Library) une fois disponibles — voir ExternalApis/ dans le repo.
+    expose:
+      - "8080"
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - cmicrolocks-api
+      - lovelist-api
+
+volumes:
+  caddy_data:
+  caddy_config:

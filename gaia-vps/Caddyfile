@@ -1,0 +1,3 @@
+api.gaia.TON-DOMAINE.fr {
+    reverse_proxy gaia-api:8080
+}

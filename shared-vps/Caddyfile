@@ -1,0 +1,7 @@
+api.cmicrolocks.TON-DOMAINE.fr {
+    reverse_proxy cmicrolocks-api:8080
+}
+
+api.lovelist.TON-DOMAINE.fr {
+    reverse_proxy lovelist-api:8080
+}

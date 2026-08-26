@@ -1,0 +1,34 @@
+# VPS dédiée à Gaia uniquement — séparée de CMicrolocks/LoveList pour pouvoir
+# scaler ou gérer Gaia indépendamment si l'appli prend.
+services:
+  gaia-api:
+    build:
+      context: ../../Gaia/env/DEV/GaiaWebApi
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: ${GAIA_DB_CONNECTION}
+      Jwt__Key: ${GAIA_JWT_KEY}
+      # Ajoute ici les autres variables déjà utilisées par GaiaWebApi
+      # (Firebase, Twilio, etc.) — voir appsettings.json pour la liste
+      # complète des clés attendues.
+    expose:
+      - "8080"
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - gaia-api
+
+volumes:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,18 @@
+# Postgres local pour tester les migrations avant de pousser vers la vraie
+# base Scaleway Managed PostgreSQL. Une seule instance, deux bases — reproduit
+# le setup de prod (DEV-S partagée entre les apps).
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init-databases.sql:/docker-entrypoint-initdb.d/init-databases.sql:ro
+      - hizope_local_pg_data:/var/lib/postgresql/data
+
+volumes:
+  hizope_local_pg_data:
