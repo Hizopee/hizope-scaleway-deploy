@@ -1,3 +1,8 @@
-api.gaia.TON-DOMAINE.fr {
+api.gaia-app.fr {
     reverse_proxy gaia-api:8080
+}
+
+gaia-app.fr, www.gaia-app.fr {
+    root * /srv/website
+    file_server
 }

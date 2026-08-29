@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gaia — Rencontres WLW en douceur</title>
+<meta name="description" content="Gaia est l'application de rencontre pensée pour les femmes aimant les femmes. Moins de bruit, plus de sens.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFF8FB;
+    --surface: #FFFFFF;
+    --surface-variant: #F7EEF2;
+    --border: #E8DCE1;
+    --text-primary: #3A2A33;
+    --text-secondary: #8C6E7A;
+    --text-muted: #B49AA4;
+    --primary: #D96C90;
+    --primary-light: #EFA5BD;
+    --primary-dark: #B25575;
+    --accent-purple: #D3A4FF;
+    --accent-peach: #FFC4D6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Exo 2', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    padding: 28px 0;
+  }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 22px; }
+  .brand .g {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--primary); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-family: Georgia, serif; font-weight: 700; font-size: 19px;
+  }
+  nav a { color: var(--text-secondary); text-decoration: none; font-weight: 600; margin-left: 28px; font-size: 15px; }
+  nav a:hover { color: var(--primary-dark); }
+
+  .hero {
+    background: linear-gradient(135deg, #4A1F4E 0%, var(--primary) 55%, var(--accent-peach) 100%);
+    color: #fff;
+    border-radius: 32px;
+    margin: 12px 24px 0;
+    padding: 90px 40px;
+    text-align: center;
+  }
+  .hero .wrap { max-width: 720px; }
+  .hero h1 { font-size: 44px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 18px; }
+  .hero p.lead { font-size: 19px; font-weight: 500; color: var(--accent-peach); max-width: 560px; margin: 0 auto 32px; }
+  .hero .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 999px; padding: 10px 20px; font-size: 14px; font-weight: 600;
+  }
+
+  section { padding: 80px 0; }
+  .section-title { font-size: 30px; font-weight: 700; text-align: center; margin-bottom: 12px; }
+  .section-sub { text-align: center; color: var(--text-secondary); font-size: 16px; max-width: 560px; margin: 0 auto 48px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 28px;
+  }
+  .card .icon {
+    width: 44px; height: 44px; border-radius: 14px;
+    background: var(--surface-variant); color: var(--primary-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 16px;
+  }
+  .card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .card p { font-size: 14.5px; color: var(--text-secondary); }
+
+  .cta {
+    background: var(--surface-variant);
+    border-radius: 28px;
+    text-align: center;
+    padding: 56px 32px;
+    margin: 0 24px;
+  }
+  .cta h2 { font-size: 26px; font-weight: 700; margin-bottom: 10px; }
+  .cta p { color: var(--text-secondary); margin-bottom: 4px; }
+  .pill {
+    display: inline-block; margin-top: 20px;
+    background: var(--primary); color: #fff; font-weight: 700;
+    padding: 14px 30px; border-radius: 999px; font-size: 15px;
+  }
+
+  footer { padding: 60px 0 40px; color: var(--text-muted); font-size: 13.5px; }
+  footer .cols { display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; margin-bottom: 32px; }
+  footer h4 { color: var(--text-secondary); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px; }
+  footer a { color: var(--text-muted); text-decoration: none; display: block; margin-bottom: 8px; }
+  footer a:hover { color: var(--primary-dark); }
+  footer .legal { border-top: 1px solid var(--border); padding-top: 24px; }
+  footer .legal p { margin-bottom: 4px; }
+
+  @media (max-width: 640px) {
+    .hero { margin: 12px 12px 0; padding: 64px 24px; }
+    .hero h1 { font-size: 32px; }
+    section { padding: 56px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand"><span class="g">G</span> Gaia</div>
+    <nav>
+      <a href="#a-propos">À propos</a>
+      <a href="#fonctionnalites">Fonctionnalités</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="badge">✦ Pensée pour les femmes aimant les femmes</div>
+    <h1 style="margin-top:20px;">Moins de bruit, plus de sens.</h1>
+    <p class="lead">Gaia est l'espace de rencontre pensé pour les femmes aimant les femmes — lesbiennes, bies, pansexuelles, queers, personnes non-binaires s'identifiant au féminin, et toutes celles qui aiment les femmes.</p>
+  </div>
+</div>
+
+<section id="a-propos">
+  <div class="wrap">
+    <h2 class="section-title">Un safe space WLW</h2>
+    <p class="section-sub">Gaia n'est pas une énième app de rencontre. Pensée avec soin, nuance, émotion et intelligence — loin du swipe compulsif et des dynamiques épuisantes des apps traditionnelles.</p>
+  </div>
+</section>
+
+<section id="fonctionnalites" style="padding-top:0;">
+  <div class="wrap">
+    <h2 class="section-title">Ce que propose Gaia</h2>
+    <p class="section-sub">Une expérience pensée de bout en bout pour des rencontres qui ont du sens.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="icon">✨</div>
+        <h3>Une IA qui comprend vraiment</h3>
+        <p>Deux tests à l'inscription — affinités physiques et personnalité — pour des matchs qui ont du sens.</p>
+      </div>
+      <div class="card">
+        <div class="icon">💘</div>
+        <h3>Ton Match Idéal</h3>
+        <p>Chaque mois, à un moment surprise, Gaia te révèle un match choisi avec soin, accompagné d'icebreakers personnalisés.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🌸</div>
+        <h3>Prendre soin de ton expérience</h3>
+        <p>Confidence Boost, Vibe du jour, anti-ghosting en douceur — Gaia veille sur ton bien-être, pas seulement sur tes matchs.</p>
+      </div>
+      <div class="card">
+        <div class="icon">💞</div>
+        <h3>Ton mode, tes règles</h3>
+        <p>Solo, Couple ou Éphémère — change de mode depuis les réglages, un peu comme changer de compte Google.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🛡️</div>
+        <h3>Une communauté vérifiée</h3>
+        <p>Vérification vocale optionnelle, badge Safe WLW, filtrage IA des faux profils.</p>
+      </div>
+      <div class="card">
+        <div class="icon">💬</div>
+        <h3>Un chat premium, sans pression</h3>
+        <p>Messagerie en temps réel, statut « vu », icebreakers personnalisés, et des modes pour respecter ton rythme.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta" id="contact">
+  <h2>Bientôt disponible</h2>
+  <p>Gaia arrive prochainement sur Google Play.</p>
+  <p>Une question, une remarque ? Écris-nous.</p>
+  <a class="pill" href="mailto:contact@gaia-app.fr">contact@gaia-app.fr</a>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>Gaia</h4>
+        <a href="#a-propos">À propos</a>
+        <a href="#fonctionnalites">Fonctionnalités</a>
+      </div>
+      <div>
+        <h4>Légal</h4>
+        <a href="https://www.notion.so/Politique-de-confidentialit-de-Gaia-3a4a0eddb8b080648e62fee5b2bd370f" target="_blank" rel="noopener">Politique de confidentialité</a>
+        <a href="#mentions-legales">Mentions légales</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="mailto:contact@gaia-app.fr">contact@gaia-app.fr</a>
+      </div>
+    </div>
+    <div class="legal" id="mentions-legales">
+      <p><strong>Éditeur du site :</strong> PANTHIER SHARON-JOYCE (Hizope) — Entrepreneur individuel</p>
+      <p>SIREN 903576841 · SIRET 90357684100014 · RCS Clermont-Ferrand</p>
+      <p>8 Rue de la Fleurie, 63370 Lempdes, France</p>
+      <p style="margin-top:12px;">© 2026 Gaia — Tous droits réservés.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

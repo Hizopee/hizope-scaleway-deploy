@@ -29,9 +29,11 @@ assumé pour l'isolation complète des 3 DB (voir mémoire `project_scaleway_hos
    zone Paris — une par appli : `db-gaia`, `db-cmicrolocks`, `db-lovelist`.
    Chacune avec sa propre base à l'intérieur (`GaiaDb`, `cmicrolocks`,
    `lovelist` respectivement).
-4. DNS : crée les enregistrements
-   - `api.gaia.tondomaine.fr` → IP publique de `gaia-vps`
-   - `api.cmicrolocks.tondomaine.fr` → IP publique de `shared-vps`
+4. DNS : une fois `gaia-vps` créée et son IP publique connue, va dans l'espace client OVH (domaine `gaia-app.fr`, acheté le 27/08) → Zone DNS, et crée deux enregistrements **A** :
+   - `gaia-app.fr` (racine/`@`) → IP publique de `gaia-vps`
+   - `api.gaia-app.fr` → IP publique de `gaia-vps` (même IP, sous-domaine différent)
+
+   Pour CMicrolocks/LoveList (`shared-vps`), le domaine n'est pas encore acheté — à faire séparément quand on s'en occupe (`api.cmicrolocks.tondomaine.fr` etc., encore en placeholder dans `shared-vps/Caddyfile`).
 
 ## 2. Sur chaque VPS (SSH)
 
@@ -43,8 +45,9 @@ git clone <url-de-ce-dossier-deploy> hizope-scaleway-deploy
 cd hizope-scaleway-deploy/gaia-vps
 cp .env.example .env
 nano .env          # vraies infos de l'instance Managed PostgreSQL "db-gaia"
-nano Caddyfile     # remplacer TON-DOMAINE.fr par le vrai domaine
 ```
+
+Le domaine `gaia-app.fr` (acheté chez OVH le 27/08) est déjà en dur dans `gaia-vps/Caddyfile`, rien à changer — le Caddyfile sert aussi `gaia-vps/website/` en statique sur le domaine racine (la page d'accueil publique, nécessaire pour la validation Play Console du compte développeur Organisation).
 
 **Sur `shared-vps`** :
 ```bash
