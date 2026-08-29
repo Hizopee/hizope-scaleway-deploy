@@ -24,8 +24,8 @@ services:
       ConnectionStrings__Default: ${LOVELIST_DB_CONNECTION}
       # Ajoute ici les cles externes (TMDB, OMDB, IGDB, Google Books,
       # Open Library) une fois disponibles -- voir ExternalApis/ dans le repo.
-    expose:
-      - "8080"
+    ports:
+      - "8081:8080"
 
   caddy:
     image: caddy:2-alpine
