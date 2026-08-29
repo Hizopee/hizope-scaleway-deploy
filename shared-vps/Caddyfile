@@ -22,5 +22,7 @@ api.lovelist.shop {
 }
 
 lovelist.shop, www.lovelist.shop {
-    respond "LoveList arrive bientot." 200
+    root * /srv/lovelist-website
+    try_files {path} /index.html
+    file_server
 }

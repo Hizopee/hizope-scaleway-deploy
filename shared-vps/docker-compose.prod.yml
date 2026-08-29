@@ -36,6 +36,7 @@ services:
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - ./admin-website:/srv/admin-website:ro
+      - ./lovelist-website:/srv/lovelist-website:ro
       - caddy_data:/data
       - caddy_config:/config
     depends_on:

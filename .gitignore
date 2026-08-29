@@ -6,3 +6,7 @@ shared-vps/.env
 # Build statique de CMicrolocks-admin (copié à la main sur le VPS, pas
 # versionné ici — source dans le repo Hizopee/CMicrolocks-admin)
 shared-vps/admin-website/
+
+# Build statique de LoveList-client (copié à la main sur le VPS, pas
+# versionné ici — source dans le repo Hizopee/LoveList-client)
+shared-vps/lovelist-website/
