@@ -56,9 +56,22 @@ mémoire `project_scaleway_hosting_separation`.
 - CMicrolocks : https://api.cmicrlocks.fr (API, testée avec vraies données `/api/salon-settings`), `db-cmicrolocks` (`Microlocks`) migrée + seedée automatiquement.
 - LoveList : API fonctionnelle en interne (`lovelist-api:8080`), `db-lovelist` (`LoveListDb`) — migrations appliquées manuellement (`dotnet ef database update`, pas d'auto-migrate dans le code).
 
-Plusieurs bugs de déploiement trouvés et corrigés en route (PR ouvertes, pas encore mergées) :
-- **Gaia-backend** (branche `fix/docker-deploy-build-and-runtime-bugs`) : Dockerfile référençait le mauvais nom de csproj/dll après un renommage (`GaiaWebApi` → `Gaia.Api`), restore incomplet pour les `ProjectReference`, et un `UseUrls("http://0.0.0.0:5000")` en dur qui écrasait la config Docker même en Production. Bonus : le seeding tournait avant les migrations EF Core.
-- **CMicrolocks-backend** (branche `feat/dockerfile-scaleway-deploy`) : aucun Dockerfile n'existait dans le repo, créé en s'inspirant des mêmes leçons (restore après `COPY . .` à cause des `ProjectReference`).
+Plusieurs bugs de déploiement trouvés et corrigés en route, PR mergées sur `main` :
+- **Gaia-backend** : Dockerfile référençait le mauvais nom de csproj/dll après un renommage (`GaiaWebApi` → `Gaia.Api`), restore incomplet pour les `ProjectReference`, et un `UseUrls("http://0.0.0.0:5000")` en dur qui écrasait la config Docker même en Production. Bonus : le seeding tournait avant les migrations EF Core.
+- **CMicrolocks-backend** : aucun Dockerfile n'existait dans le repo, créé en s'inspirant des mêmes leçons (restore après `COPY . .` à cause des `ProjectReference`).
+
+✅ **Pipelines CI/CD en place et vérifiés (29/08)** pour les 3 apps — `.github/workflows/deploy.yml`
+dans chaque repo, déclenché sur push vers `main` : SSH vers le VPS cible, `git pull`, rebuild et
+redémarrage du conteneur via `docker compose`. Secret `DEPLOY_SSH_KEY` (une seule paire de clés,
+autorisée sur les deux VPS) à ajouter dans les "Actions secrets" de chaque repo GitHub. Bugs trouvés
+en testant les premiers runs réels : `git fetch` a besoin de `GIT_SSH_COMMAND` pointant vers la
+deploy key du repo (pas de clé SSH git par défaut sur les VPS) ; `git checkout main` doit être forcé
+(`checkout -f -B main origin/main`) pour ignorer d'éventuelles modifs locales faites en direct sur le
+VPS ; le `.env` de `shared-vps` contient des espaces non échappés dans les valeurs
+(`Ssl Mode=Require`), donc extraire une valeur précise se fait par `grep '^KEY=' .env | cut -d'=' -f2-`,
+jamais par `source`. LoveList applique ses migrations EF Core manuellement à chaque déploiement
+(`dotnet ef database update` dans un conteneur SDK jetable) car son code n'a pas d'auto-migrate au
+démarrage, contrairement à Gaia et CMicrolocks.
 
 ## 2. Sur chaque VPS (SSH)
 
