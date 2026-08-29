@@ -52,6 +52,15 @@ mémoire `project_scaleway_hosting_separation`.
 
    Pour CMicrolocks/LoveList (`shared-vps`), le domaine n'est pas encore acheté — à faire séparément quand on s'en occupe (`api.cmicrolocks.tondomaine.fr` etc., encore en placeholder dans `shared-vps/Caddyfile`).
 
+✅ **Gaia entièrement déployée et fonctionnelle (29/08)** : https://gaia-app.fr
+(site) et https://api.gaia-app.fr (API) sont live, HTTPS auto via Caddy/Let's
+Encrypt, `db-gaia` migrée + seedée. 3 bugs de déploiement trouvés et corrigés
+sur la branche `fix/docker-deploy-build-and-runtime-bugs` (PR à merger sur
+`dev`) : Dockerfile référençait le mauvais nom de csproj/dll après un
+renommage, restore incomplet pour les ProjectReference, et un
+`UseUrls("http://0.0.0.0:5000")` en dur qui écrasait la config Docker même
+en Production.
+
 ## 2. Sur chaque VPS (SSH)
 
 **Sur `gaia-vps`** :
