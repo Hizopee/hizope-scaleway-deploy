@@ -39,22 +39,26 @@ mémoire `project_scaleway_hosting_separation`.
    `LoveListDb` respectivement — attention à la casse exacte, cf.
    `.env.example`) et un **endpoint public + Allowed IPs** restreint aux IP
    des VPS + IP de poste local (pour les migrations `dotnet-ef` depuis le PC).
-4. ✅ DNS fait (29/08) pour les 2 domaines :
+4. ✅ DNS fait (29/08) pour les 3 domaines :
    - `gaia-app.fr` (acheté 27/08) → `gaia-vps` (`62.210.87.185`) : `@`, `www`, `api`.
-   - `cmicrlocks.fr` (acheté 29/08) → `shared-vps` (`62.210.78.72`) : `@`, `www`, `api`.
+   - `cmicrolocks.fr` (acheté 29/08) → `shared-vps` (`62.210.78.72`) : `@`, `www`, `api`, `admin`.
+   - `lovelist.shop` (acheté 29/08) → `shared-vps` (`62.210.78.72`) : `@`, `www`, `api`.
 
-   Dans les deux cas, les anciens enregistrements de parking OVH par défaut
+   Dans les trois cas, les anciens enregistrements de parking OVH par défaut
    (`213.186.33.5`) ont été supprimés/remplacés. Propagation DNS annoncée
-   jusqu'à 24h par OVH mais observée quasi-instantanée dans les deux cas.
+   jusqu'à 24h par OVH mais observée quasi-instantanée dans les trois cas.
 
-   LoveList n'a pas de domaine dédié pour l'instant (pas dans le périmètre
-   du 29/08) — reste accessible en interne sur le réseau Docker de
-   `shared-vps` (`lovelist-api:8080`), pas de route Caddy publique encore.
+   ⚠️ **Correction domaine (29/08, plus tard le même jour)** : le premier
+   domaine acheté était en fait `cmicrlocks.fr` (faute de frappe, il manque
+   un "o"). Racheté en correct sous `cmicrolocks.fr`, DNS + Caddyfile migrés
+   vers le nom correct. `cmicrlocks.fr` reste possédé (acheté par erreur) mais
+   n'est plus routé nulle part — décision à prendre plus tard (laisser
+   parqué, rediriger vers `cmicrolocks.fr`, ou abandonner au renouvellement).
 
 ✅ **Les 3 applis sont déployées et fonctionnelles (29/08)** :
 - Gaia : https://gaia-app.fr (site) + https://api.gaia-app.fr (API), `db-gaia` migrée + seedée automatiquement au démarrage.
-- CMicrolocks : https://api.cmicrlocks.fr (API, testée avec vraies données `/api/salon-settings`), `db-cmicrolocks` (`Microlocks`) migrée + seedée automatiquement. Interface admin (Vue 3, repo `Hizopee/CMicrolocks-admin`) déployée en statique sur https://admin.cmicrlocks.fr — build `npm run build` copié à la main dans `shared-vps/admin-website/` sur le VPS (pas de pipeline CI/CD pour ce repo pour l'instant), Caddy proxie `/api/*` vers `cmicrolocks-api` sur ce même domaine pour que les appels relatifs du front fonctionnent sans changement de code. Beaucoup d'écrans de cette interface utilisent encore des données mockées (`src/mocks/`) plutôt que les vrais endpoints — à vérifier écran par écran avant de la considérer prête pour un usage réel.
-- LoveList : API fonctionnelle en interne (`lovelist-api:8080`), `db-lovelist` (`LoveListDb`) — migrations appliquées manuellement (`dotnet ef database update`, pas d'auto-migrate dans le code).
+- CMicrolocks : https://api.cmicrolocks.fr (API, testée avec vraies données `/api/salon-settings`), `db-cmicrolocks` (`Microlocks`) migrée + seedée automatiquement. Interface admin (Vue 3, repo `Hizopee/CMicrolocks-admin`) déployée en statique sur https://admin.cmicrolocks.fr — build `npm run build` copié à la main dans `shared-vps/admin-website/` sur le VPS (pas de pipeline CI/CD pour ce repo pour l'instant), Caddy proxie `/api/*` vers `cmicrolocks-api` sur ce même domaine pour que les appels relatifs du front fonctionnent sans changement de code. Beaucoup d'écrans de cette interface utilisent encore des données mockées (`src/mocks/`) plutôt que les vrais endpoints — à vérifier écran par écran avant de la considérer prête pour un usage réel.
+- LoveList : https://api.lovelist.shop (API, testée — répond 404 correct sur une route inconnue), `db-lovelist` (`LoveListDb`) — migrations appliquées automatiquement à chaque déploiement CI (`dotnet ef database update` dans un conteneur SDK jetable, voir pipeline CI/CD plus bas). L'exposition temporaire du port `8081` (accès direct par IP, sans HTTPS, utilisée le temps que le domaine soit acheté) a été retirée maintenant que le vrai domaine route dessus. `LoveList-client` (React) n'est pas encore déployé.
 
 Plusieurs bugs de déploiement trouvés et corrigés en route, PR mergées sur `main` :
 - **Gaia-backend** : Dockerfile référençait le mauvais nom de csproj/dll après un renommage (`GaiaWebApi` → `Gaia.Api`), restore incomplet pour les `ProjectReference`, et un `UseUrls("http://0.0.0.0:5000")` en dur qui écrasait la config Docker même en Production. Bonus : le seeding tournait avant les migrations EF Core.
@@ -86,6 +90,8 @@ nano .env          # vraies infos de l'instance Managed PostgreSQL "db-gaia"
 ```
 
 Le domaine `gaia-app.fr` (acheté chez OVH le 27/08) est déjà en dur dans `gaia-vps/Caddyfile`, rien à changer — le Caddyfile sert aussi `gaia-vps/website/` en statique sur le domaine racine (la page d'accueil publique, nécessaire pour la validation Play Console du compte développeur Organisation).
+
+`shared-vps/Caddyfile` route déjà `cmicrolocks.fr` (+ `www`, `api`, `admin`) et `lovelist.shop` (+ `www`, `api`) — rien à changer sauf si un nouveau sous-domaine est ajouté.
 
 **Sur `shared-vps`** :
 ```bash
