@@ -1,4 +1,4 @@
-# Déploiement Scaleway — Gaia + CMicrolocks (+ LoveList) — ~€53.60/mois
+# Déploiement Scaleway — Gaia + CMicrolocks (+ LoveList) — ~€63.75/mois (réel)
 
 Gaia est hébergée sur sa propre VPS, séparée de CMicrolocks/LoveList, pour
 pouvoir la scaler ou la gérer indépendamment si l'appli prend. **Chaque
@@ -7,24 +7,27 @@ a un chat, CMicrolocks tape en continu sur la DB (messages, RDV) — les deux
 sont des profils "bruyants" qui justifient une isolation complète plutôt
 qu'un partage à risque de ralentissement mutuel.
 
-| Ressource | Offre | Prix |
-|---|---|---|
-| VPS Gaia (`gaia-vps/`) | DEV1-S (2 vCPU, 2 Go RAM) | €6.34/mois |
-| VPS partagée CMicrolocks + LoveList (`shared-vps/`) | DEV1-M (3 vCPU, 4 Go RAM) | €14.26/mois |
-| Managed Database for PostgreSQL — Gaia | DEV-S, dédiée | €11/mois |
-| Managed Database for PostgreSQL — CMicrolocks | DEV-S, dédiée | €11/mois |
-| Managed Database for PostgreSQL — LoveList | DEV-S, dédiée | €11/mois |
-| **Total** | | **~€53.60/mois** |
+| Ressource | Offre | Prix catalogue | Prix réel (IP + stockage inclus) |
+|---|---|---|---|
+| VPS Gaia (`gaia-vps/`) ✅ créée | DEV1-S (2 vCPU, 2 Go RAM) | €6.34/mois | **€11.15/mois** |
+| VPS partagée CMicrolocks + LoveList (`shared-vps/`) ✅ créée | DEV1-M (3 vCPU, 4 Go RAM) | €14.26/mois | **€19.35/mois** |
+| Managed Database for PostgreSQL — Gaia | DEV-S, dédiée | €11/mois | €11/mois |
+| Managed Database for PostgreSQL — CMicrolocks | DEV-S, dédiée | €11/mois | €11/mois |
+| Managed Database for PostgreSQL — LoveList | DEV-S, dédiée | €11/mois | €11/mois |
+| **Total** | | ~€53.60/mois | **~€63.50/mois** |
 
-⚠️ Dépasse volontairement le plafond initial de €50/mois de ~€3.60, choix
-assumé pour l'isolation complète des 3 DB (voir mémoire `project_scaleway_hosting_separation`).
+⚠️ Le prix catalogue des offres VPS n'inclut ni l'IP publique (€0.005/h ≈
+€3.65/mois) ni le stockage bloc (10 Go ≈ €0.95-1.30/mois selon l'offre) —
+prix réel confirmé aux étapes de création. Dépasse le plafond initial de
+€50/mois de ~€13.50, choix assumé pour l'isolation complète des 3 DB (voir
+mémoire `project_scaleway_hosting_separation`).
 
 ## 1. Créer les ressources Scaleway (console, à faire toi-même — facturation)
 
-1. Compte Scaleway + projet dédié (ex: "hizope-prod").
-2. **2 instances** (Ubuntu 24.04 LTS, zone Paris) :
-   - `gaia-vps` — offre DEV1-S
-   - `shared-vps` — offre DEV1-M
+1. Compte Scaleway + projet dédié ("MHQ").
+2. ✅ **2 instances créées** (Ubuntu 26.04, zone Paris/PAR 1) :
+   - `gaia-vps` — DEV1-S, IP publique `62.210.87.185`
+   - `shared-vps` — DEV1-M, IP publique `62.210.78.72`
 3. **3 instances Managed Database for PostgreSQL** séparées, offre **DEV-S**,
    zone Paris — une par appli : `db-gaia`, `db-cmicrolocks`, `db-lovelist`.
    Chacune avec sa propre base à l'intérieur (`GaiaDb`, `cmicrolocks`,
