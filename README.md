@@ -29,9 +29,15 @@ assumé pour l'isolation complète des 3 DB (voir mémoire `project_scaleway_hos
    zone Paris — une par appli : `db-gaia`, `db-cmicrolocks`, `db-lovelist`.
    Chacune avec sa propre base à l'intérieur (`GaiaDb`, `cmicrolocks`,
    `lovelist` respectivement).
-4. DNS : une fois `gaia-vps` créée et son IP publique connue, va dans l'espace client OVH (domaine `gaia-app.fr`, acheté le 27/08) → Zone DNS, et crée deux enregistrements **A** :
-   - `gaia-app.fr` (racine/`@`) → IP publique de `gaia-vps`
-   - `api.gaia-app.fr` → IP publique de `gaia-vps` (même IP, sous-domaine différent)
+4. ✅ DNS fait (29/08) : `gaia-vps` créée, IP publique **62.210.87.185**. 3 enregistrements
+   **A** créés dans la Zone DNS OVH de `gaia-app.fr` (les anciens enregistrements par
+   défaut OVH `@`/`www` → `213.186.33.5`, page de parking, ont été supprimés/remplacés) :
+   - `gaia-app.fr` (racine/`@`) → `62.210.87.185`
+   - `www.gaia-app.fr` → `62.210.87.185`
+   - `api.gaia-app.fr` → `62.210.87.185`
+
+   Propagation DNS : jusqu'à 24h (annoncée par OVH), à vérifier avant de compter dessus
+   pour la validation Play Console ou l'obtention du certificat HTTPS par Caddy.
 
    Pour CMicrolocks/LoveList (`shared-vps`), le domaine n'est pas encore acheté — à faire séparément quand on s'en occupe (`api.cmicrolocks.tondomaine.fr` etc., encore en placeholder dans `shared-vps/Caddyfile`).
 
