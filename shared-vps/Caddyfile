@@ -1,7 +1,7 @@
-api.cmicrolocks.TON-DOMAINE.fr {
+api.cmicrlocks.fr {
     reverse_proxy cmicrolocks-api:8080
 }
 
-api.lovelist.TON-DOMAINE.fr {
-    reverse_proxy lovelist-api:8080
+cmicrlocks.fr, www.cmicrlocks.fr {
+    respond "CMicrolocks arrive bientot." 200
 }

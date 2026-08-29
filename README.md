@@ -32,34 +32,33 @@ mémoire `project_scaleway_hosting_separation`.
    - `gaia-vps` — DEV1-S, IP publique `62.210.87.185`
    - `shared-vps` — DEV1-M, IP publique `62.210.78.72`
 3. ✅ **3 instances Managed Database for PostgreSQL créées** (29/08), offre
-   **DEV-S**, PostgreSQL 17, zone Paris — une par appli : `db-gaia`,
-   `db-cmicrolocks`, `db-lovelist`. Identifiants générés à la création,
-   notés temporairement en local (pas committés) — à reporter dans les
-   `.env` de chaque VPS. Chacune doit encore avoir sa base applicative créée
-   à l'intérieur (`GaiaDb`, `cmicrolocks`, `lovelist` respectivement) et un
-   **endpoint public + Allowed IPs** activés (pas configuré par défaut —
-   restreindre aux IP des VPS : `62.210.87.185` pour `db-gaia`,
-   `62.210.78.72` pour `db-cmicrolocks`/`db-lovelist`).
-4. ✅ DNS fait (29/08) : `gaia-vps` créée, IP publique **62.210.87.185**. 3 enregistrements
-   **A** créés dans la Zone DNS OVH de `gaia-app.fr` (les anciens enregistrements par
-   défaut OVH `@`/`www` → `213.186.33.5`, page de parking, ont été supprimés/remplacés) :
-   - `gaia-app.fr` (racine/`@`) → `62.210.87.185`
-   - `www.gaia-app.fr` → `62.210.87.185`
-   - `api.gaia-app.fr` → `62.210.87.185`
+   **DEV-S**, PostgreSQL 17, zone Paris : `db-gaia`, `db-cmicrolocks`,
+   `db-lovelist`. Identifiants générés à la création, notés temporairement
+   en local (pas committés), reportés dans les `.env` de chaque VPS. Chacune
+   a sa base applicative créée à l'intérieur (`GaiaDb`, `Microlocks`,
+   `LoveListDb` respectivement — attention à la casse exacte, cf.
+   `.env.example`) et un **endpoint public + Allowed IPs** restreint aux IP
+   des VPS + IP de poste local (pour les migrations `dotnet-ef` depuis le PC).
+4. ✅ DNS fait (29/08) pour les 2 domaines :
+   - `gaia-app.fr` (acheté 27/08) → `gaia-vps` (`62.210.87.185`) : `@`, `www`, `api`.
+   - `cmicrlocks.fr` (acheté 29/08) → `shared-vps` (`62.210.78.72`) : `@`, `www`, `api`.
 
-   Propagation DNS : jusqu'à 24h (annoncée par OVH), à vérifier avant de compter dessus
-   pour la validation Play Console ou l'obtention du certificat HTTPS par Caddy.
+   Dans les deux cas, les anciens enregistrements de parking OVH par défaut
+   (`213.186.33.5`) ont été supprimés/remplacés. Propagation DNS annoncée
+   jusqu'à 24h par OVH mais observée quasi-instantanée dans les deux cas.
 
-   Pour CMicrolocks/LoveList (`shared-vps`), le domaine n'est pas encore acheté — à faire séparément quand on s'en occupe (`api.cmicrolocks.tondomaine.fr` etc., encore en placeholder dans `shared-vps/Caddyfile`).
+   LoveList n'a pas de domaine dédié pour l'instant (pas dans le périmètre
+   du 29/08) — reste accessible en interne sur le réseau Docker de
+   `shared-vps` (`lovelist-api:8080`), pas de route Caddy publique encore.
 
-✅ **Gaia entièrement déployée et fonctionnelle (29/08)** : https://gaia-app.fr
-(site) et https://api.gaia-app.fr (API) sont live, HTTPS auto via Caddy/Let's
-Encrypt, `db-gaia` migrée + seedée. 3 bugs de déploiement trouvés et corrigés
-sur la branche `fix/docker-deploy-build-and-runtime-bugs` (PR à merger sur
-`dev`) : Dockerfile référençait le mauvais nom de csproj/dll après un
-renommage, restore incomplet pour les ProjectReference, et un
-`UseUrls("http://0.0.0.0:5000")` en dur qui écrasait la config Docker même
-en Production.
+✅ **Les 3 applis sont déployées et fonctionnelles (29/08)** :
+- Gaia : https://gaia-app.fr (site) + https://api.gaia-app.fr (API), `db-gaia` migrée + seedée automatiquement au démarrage.
+- CMicrolocks : https://api.cmicrlocks.fr (API, testée avec vraies données `/api/salon-settings`), `db-cmicrolocks` (`Microlocks`) migrée + seedée automatiquement.
+- LoveList : API fonctionnelle en interne (`lovelist-api:8080`), `db-lovelist` (`LoveListDb`) — migrations appliquées manuellement (`dotnet ef database update`, pas d'auto-migrate dans le code).
+
+Plusieurs bugs de déploiement trouvés et corrigés en route (PR ouvertes, pas encore mergées) :
+- **Gaia-backend** (branche `fix/docker-deploy-build-and-runtime-bugs`) : Dockerfile référençait le mauvais nom de csproj/dll après un renommage (`GaiaWebApi` → `Gaia.Api`), restore incomplet pour les `ProjectReference`, et un `UseUrls("http://0.0.0.0:5000")` en dur qui écrasait la config Docker même en Production. Bonus : le seeding tournait avant les migrations EF Core.
+- **CMicrolocks-backend** (branche `feat/dockerfile-scaleway-deploy`) : aucun Dockerfile n'existait dans le repo, créé en s'inspirant des mêmes leçons (restore après `COPY . .` à cause des `ProjectReference`).
 
 ## 2. Sur chaque VPS (SSH)
 
