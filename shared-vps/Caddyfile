@@ -1,8 +1,8 @@
-api.cmicrlocks.fr {
+api.cmicrolocks.fr {
     reverse_proxy cmicrolocks-api:8080
 }
 
-admin.cmicrlocks.fr {
+admin.cmicrolocks.fr {
     handle /api/* {
         reverse_proxy cmicrolocks-api:8080
     }
@@ -13,6 +13,16 @@ admin.cmicrlocks.fr {
     }
 }
 
-cmicrlocks.fr, www.cmicrlocks.fr {
+cmicrolocks.fr, www.cmicrolocks.fr {
     respond "CMicrolocks arrive bientot." 200
+}
+
+api.lovelist.shop {
+    reverse_proxy lovelist-api:8080
+}
+
+lovelist.shop, www.lovelist.shop {
+    root * /srv/lovelist-website
+    try_files {path} /index.html
+    file_server
 }
