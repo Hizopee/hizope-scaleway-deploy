@@ -53,7 +53,7 @@ mémoire `project_scaleway_hosting_separation`.
 
 ✅ **Les 3 applis sont déployées et fonctionnelles (29/08)** :
 - Gaia : https://gaia-app.fr (site) + https://api.gaia-app.fr (API), `db-gaia` migrée + seedée automatiquement au démarrage.
-- CMicrolocks : https://api.cmicrlocks.fr (API, testée avec vraies données `/api/salon-settings`), `db-cmicrolocks` (`Microlocks`) migrée + seedée automatiquement.
+- CMicrolocks : https://api.cmicrlocks.fr (API, testée avec vraies données `/api/salon-settings`), `db-cmicrolocks` (`Microlocks`) migrée + seedée automatiquement. Interface admin (Vue 3, repo `Hizopee/CMicrolocks-admin`) déployée en statique sur https://admin.cmicrlocks.fr — build `npm run build` copié à la main dans `shared-vps/admin-website/` sur le VPS (pas de pipeline CI/CD pour ce repo pour l'instant), Caddy proxie `/api/*` vers `cmicrolocks-api` sur ce même domaine pour que les appels relatifs du front fonctionnent sans changement de code. Beaucoup d'écrans de cette interface utilisent encore des données mockées (`src/mocks/`) plutôt que les vrais endpoints — à vérifier écran par écran avant de la considérer prête pour un usage réel.
 - LoveList : API fonctionnelle en interne (`lovelist-api:8080`), `db-lovelist` (`LoveListDb`) — migrations appliquées manuellement (`dotnet ef database update`, pas d'auto-migrate dans le code).
 
 Plusieurs bugs de déploiement trouvés et corrigés en route, PR mergées sur `main` :

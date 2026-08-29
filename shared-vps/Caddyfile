@@ -2,6 +2,17 @@ api.cmicrlocks.fr {
     reverse_proxy cmicrolocks-api:8080
 }
 
+admin.cmicrlocks.fr {
+    handle /api/* {
+        reverse_proxy cmicrolocks-api:8080
+    }
+    handle {
+        root * /srv/admin-website
+        try_files {path} /index.html
+        file_server
+    }
+}
+
 cmicrlocks.fr, www.cmicrlocks.fr {
     respond "CMicrolocks arrive bientot." 200
 }
