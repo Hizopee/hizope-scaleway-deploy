@@ -1,4 +1,4 @@
-# Déploiement Scaleway — Gaia + CMicrolocks (+ LoveList) — ~€63.75/mois (réel)
+# Déploiement Scaleway — Gaia + CMicrolocks (+ LoveList) — ~€109.50/mois (réel)
 
 Gaia est hébergée sur sa propre VPS, séparée de CMicrolocks/LoveList, pour
 pouvoir la scaler ou la gérer indépendamment si l'appli prend. **Chaque
@@ -7,20 +7,23 @@ a un chat, CMicrolocks tape en continu sur la DB (messages, RDV) — les deux
 sont des profils "bruyants" qui justifient une isolation complète plutôt
 qu'un partage à risque de ralentissement mutuel.
 
-| Ressource | Offre | Prix catalogue | Prix réel (IP + stockage inclus) |
+| Ressource | Offre | Prix catalogue | Prix réel |
 |---|---|---|---|
 | VPS Gaia (`gaia-vps/`) ✅ créée | DEV1-S (2 vCPU, 2 Go RAM) | €6.34/mois | **€11.15/mois** |
 | VPS partagée CMicrolocks + LoveList (`shared-vps/`) ✅ créée | DEV1-M (3 vCPU, 4 Go RAM) | €14.26/mois | **€19.35/mois** |
-| Managed Database for PostgreSQL — Gaia | DEV-S, dédiée | €11/mois | €11/mois |
-| Managed Database for PostgreSQL — CMicrolocks | DEV-S, dédiée | €11/mois | €11/mois |
-| Managed Database for PostgreSQL — LoveList | DEV-S, dédiée | €11/mois | €11/mois |
-| **Total** | | ~€53.60/mois | **~€63.50/mois** |
+| Managed Database for PostgreSQL — `db-gaia` ✅ créée | DEV-S, dédiée, HA 2 nodes | €11/mois | **€23.30/mois** |
+| Managed Database for PostgreSQL — `db-cmicrolocks` ✅ créée | DEV-S, dédiée, HA 2 nodes | €11/mois | **€23.30/mois** |
+| Managed Database for PostgreSQL — `db-lovelist` ✅ créée | DEV-S, dédiée, HA 2 nodes | €11/mois | **€23.30/mois** |
+| **Total** | | ~€53.60/mois | **~€100.40/mois** |
 
-⚠️ Le prix catalogue des offres VPS n'inclut ni l'IP publique (€0.005/h ≈
-€3.65/mois) ni le stockage bloc (10 Go ≈ €0.95-1.30/mois selon l'offre) —
-prix réel confirmé aux étapes de création. Dépasse le plafond initial de
-€50/mois de ~€13.50, choix assumé pour l'isolation complète des 3 DB (voir
-mémoire `project_scaleway_hosting_separation`).
+⚠️ Deux surprises de prix par rapport à l'estimation initiale, validées ensemble le 29/08 (choix : continuer quand même, isolation complète prioritaire sur le coût) :
+- VPS : le prix catalogue n'inclut ni l'IP publique (€0.005/h ≈ €3.65/mois) ni le stockage bloc (10 Go ≈ €0.95-1.30/mois).
+- Managed Database DEV-S : toujours livrée en **2 nodes (HA)**, pas d'option 1 node moins cher sur cette offre — €21.32/mois de config + €1.99/mois de stockage 10 Go = €23.30/mois réel, plus du double des €11/mois estimés au départ.
+
+Dépasse le plafond initial de €50/mois de ~€59.50 — à surveiller si le coût
+DB devient un problème (option de repli : Postgres auto-hébergé sur les VPS
+au lieu de Managed Database, économiserait ~€70/mois sur les 3 DB). Voir
+mémoire `project_scaleway_hosting_separation`.
 
 ## 1. Créer les ressources Scaleway (console, à faire toi-même — facturation)
 
@@ -28,10 +31,15 @@ mémoire `project_scaleway_hosting_separation`).
 2. ✅ **2 instances créées** (Ubuntu 26.04, zone Paris/PAR 1) :
    - `gaia-vps` — DEV1-S, IP publique `62.210.87.185`
    - `shared-vps` — DEV1-M, IP publique `62.210.78.72`
-3. **3 instances Managed Database for PostgreSQL** séparées, offre **DEV-S**,
-   zone Paris — une par appli : `db-gaia`, `db-cmicrolocks`, `db-lovelist`.
-   Chacune avec sa propre base à l'intérieur (`GaiaDb`, `cmicrolocks`,
-   `lovelist` respectivement).
+3. ✅ **3 instances Managed Database for PostgreSQL créées** (29/08), offre
+   **DEV-S**, PostgreSQL 17, zone Paris — une par appli : `db-gaia`,
+   `db-cmicrolocks`, `db-lovelist`. Identifiants générés à la création,
+   notés temporairement en local (pas committés) — à reporter dans les
+   `.env` de chaque VPS. Chacune doit encore avoir sa base applicative créée
+   à l'intérieur (`GaiaDb`, `cmicrolocks`, `lovelist` respectivement) et un
+   **endpoint public + Allowed IPs** activés (pas configuré par défaut —
+   restreindre aux IP des VPS : `62.210.87.185` pour `db-gaia`,
+   `62.210.78.72` pour `db-cmicrolocks`/`db-lovelist`).
 4. ✅ DNS fait (29/08) : `gaia-vps` créée, IP publique **62.210.87.185**. 3 enregistrements
    **A** créés dans la Zone DNS OVH de `gaia-app.fr` (les anciens enregistrements par
    défaut OVH `@`/`www` → `213.186.33.5`, page de parking, ont été supprimés/remplacés) :
