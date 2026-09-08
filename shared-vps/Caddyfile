@@ -14,7 +14,20 @@ admin.cmicrolocks.fr {
 }
 
 cmicrolocks.fr, www.cmicrolocks.fr {
-    respond "CMicrolocks arrive bientot." 200
+    # Site de réservation (SPA Vue, repo CMicrolocks-client-web) servi en statique.
+    # /api et /hubs sont proxifiés vers l'API sur ce même domaine pour que les appels
+    # relatifs du front + SignalR fonctionnent sans CORS.
+    handle /api/* {
+        reverse_proxy cmicrolocks-api:8080
+    }
+    handle /hubs/* {
+        reverse_proxy cmicrolocks-api:8080
+    }
+    handle {
+        root * /srv/cmicrolocks-website
+        try_files {path} /index.html
+        file_server
+    }
 }
 
 api.lovelist.shop {
