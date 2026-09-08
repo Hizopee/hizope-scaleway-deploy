@@ -23,6 +23,10 @@ cmicrolocks.fr, www.cmicrolocks.fr {
     handle /hubs/* {
         reverse_proxy cmicrolocks-api:8080
     }
+    # Photos servies par le backend (galerie, chat, photos de référence).
+    handle /uploads/* {
+        reverse_proxy cmicrolocks-api:8080
+    }
     handle {
         root * /srv/cmicrolocks-website
         try_files {path} /index.html
