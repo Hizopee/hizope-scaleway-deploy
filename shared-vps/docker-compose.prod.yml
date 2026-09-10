@@ -11,6 +11,11 @@ services:
       ASPNETCORE_ENVIRONMENT: Production
       ConnectionStrings__DefaultConnection: ${CMICROLOCKS_DB_CONNECTION}
       Jwt__Key: ${CMICROLOCKS_JWT_KEY}
+      # index 0 (localhost) vient deja d'appsettings.json -- on complete la liste
+      # par index pour le site vitrine qui appelle /api/salon-settings en cross-origin
+      # (politique de confidentialite servie sur cmicrolocks.fr, pas sur api.cmicrolocks.fr).
+      Cors__AllowedOrigins__1: https://cmicrolocks.fr
+      Cors__AllowedOrigins__2: https://www.cmicrolocks.fr
     expose:
       - "8080"
 
@@ -22,8 +27,13 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ConnectionStrings__Default: ${LOVELIST_DB_CONNECTION}
-      # Ajoute ici les cles externes (TMDB, OMDB, IGDB, Google Books,
-      # Open Library) une fois disponibles -- voir ExternalApis/ dans le repo.
+      ExternalApis__Tmdb__ApiKey: ${LOVELIST_TMDB_API_KEY}
+      ExternalApis__Omdb__ApiKey: ${LOVELIST_OMDB_API_KEY}
+      ExternalApis__Igdb__ClientId: ${LOVELIST_IGDB_CLIENT_ID}
+      ExternalApis__Igdb__ClientSecret: ${LOVELIST_IGDB_CLIENT_SECRET}
+      ExternalApis__GoogleBooks__ApiKey: ${LOVELIST_GOOGLE_BOOKS_API_KEY}
+      Admin__Key: ${LOVELIST_ADMIN_KEY}
+      # Open Library n'a pas besoin de cle (API publique gratuite).
     expose:
       - "8080"
 
