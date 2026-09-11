@@ -16,6 +16,13 @@ services:
       # (politique de confidentialite servie sur cmicrolocks.fr, pas sur api.cmicrolocks.fr).
       Cors__AllowedOrigins__1: https://cmicrolocks.fr
       Cors__AllowedOrigins__2: https://www.cmicrolocks.fr
+      # HIZ-193 : SMS reels (rappels/confirmations RDV) via Twilio, expediteur
+      # alphanumerique "CMICROLOCKS" (pas de numero a louer, pas de reponse SMS
+      # attendue -- rappel a sens unique avec lien vers la page de confirmation).
+      Twilio__AccountSid: ${CMICROLOCKS_TWILIO_ACCOUNT_SID}
+      Twilio__AuthToken: ${CMICROLOCKS_TWILIO_AUTH_TOKEN}
+      Twilio__FromNumber: ${CMICROLOCKS_TWILIO_FROM}
+      Integrations__UseRealSms: "true"
       # HIZ-229 : cle partagee avec Hizope-pilotage-api pour api/platform/* (PAS le JWT
       # admin/employee/client -- voir PlatformKeyFilter cote CMicrolocks-backend).
       Platform__PilotageKey: ${CMICROLOCKS_PLATFORM_KEY}
