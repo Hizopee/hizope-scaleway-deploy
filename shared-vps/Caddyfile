@@ -3,7 +3,17 @@ api.cmicrolocks.fr {
 }
 
 admin.cmicrolocks.fr {
+    # HIZ-227 : /hubs (SignalR temps réel) et /uploads (photos de référence, API_ORIGIN
+    # relatif côté admin) doivent aussi être proxifiés vers l'API, comme sur cmicrolocks.fr —
+    # sinon ils tombent dans le handle générique ci-dessous et file_server répond
+    # 405 (POST refusé) ou 404 selon le cas.
     handle /api/* {
+        reverse_proxy cmicrolocks-api:8080
+    }
+    handle /hubs/* {
+        reverse_proxy cmicrolocks-api:8080
+    }
+    handle /uploads/* {
         reverse_proxy cmicrolocks-api:8080
     }
     handle {
