@@ -23,6 +23,9 @@ services:
       Twilio__AuthToken: ${CMICROLOCKS_TWILIO_AUTH_TOKEN}
       Twilio__FromNumber: ${CMICROLOCKS_TWILIO_FROM}
       Integrations__UseRealSms: "true"
+      # HIZ-229 : cle partagee avec Hizope-pilotage-api pour api/platform/* (PAS le JWT
+      # admin/employee/client -- voir PlatformKeyFilter cote CMicrolocks-backend).
+      Platform__PilotageKey: ${CMICROLOCKS_PLATFORM_KEY}
     expose:
       - "8080"
 
@@ -44,22 +47,43 @@ services:
     expose:
       - "8080"
 
+  # HIZ-229 -- tableau de bord interne Hizope (Joyce uniquement), servi sur cmicrlocks.fr
+  # (domaine defensif inutilise, sans rapport avec le produit CMicrolocks). Agrege les
+  # routes api/platform/* de chaque backend produit (CMicrolocks pour l'instant).
+  hizope-pilotage-api:
+    build:
+      context: ../../Hizope-pilotage-api
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      CMicrolocks__BaseUrl: https://api.cmicrolocks.fr
+      CMicrolocks__PlatformKey: ${CMICROLOCKS_PLATFORM_KEY}
+    expose:
+      - "8080"
+
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      # HIZ-229 : lu par le Caddyfile via {env.HIZOPE_PILOTAGE_BASIC_AUTH_HASH}
+      # (basic_auth de cmicrlocks.fr) -- hash bcrypt, jamais le mot de passe en clair.
+      HIZOPE_PILOTAGE_BASIC_AUTH_HASH: ${HIZOPE_PILOTAGE_BASIC_AUTH_HASH}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - ./admin-website:/srv/admin-website:ro
       - ./cmicrolocks-website:/srv/cmicrolocks-website:ro
       - ./lovelist-website:/srv/lovelist-website:ro
+      - ./hizope-pilotage-website:/srv/hizope-pilotage-website:ro
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
       - cmicrolocks-api
       - lovelist-api
+      - hizope-pilotage-api
 
 volumes:
   caddy_data:

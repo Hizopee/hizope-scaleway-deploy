@@ -14,3 +14,6 @@ shared-vps/lovelist-website/
 # Build statique du site de réservation CMicrolocks, déployé par la CI de
 # Hizopee/CMicrolocks-client-web (rsync de dist/ vers le VPS, pas versionné ici)
 shared-vps/cmicrolocks-website/
+
+# Build statique de Hizope-pilotage-web (rsync par sa propre CI, pas versionné ici)
+shared-vps/hizope-pilotage-website/

@@ -3,7 +3,17 @@ api.cmicrolocks.fr {
 }
 
 admin.cmicrolocks.fr {
+    # HIZ-227 : /hubs (SignalR temps réel) et /uploads (photos de référence, API_ORIGIN
+    # relatif côté admin) doivent aussi être proxifiés vers l'API, comme sur cmicrolocks.fr —
+    # sinon ils tombent dans le handle générique ci-dessous et file_server répond
+    # 405 (POST refusé) ou 404 selon le cas.
     handle /api/* {
+        reverse_proxy cmicrolocks-api:8080
+    }
+    handle /hubs/* {
+        reverse_proxy cmicrolocks-api:8080
+    }
+    handle /uploads/* {
         reverse_proxy cmicrolocks-api:8080
     }
     handle {
@@ -42,4 +52,22 @@ lovelist.shop, www.lovelist.shop {
     root * /srv/lovelist-website
     try_files {path} /index.html
     file_server
+}
+
+# HIZ-229 — cmicrlocks.fr (SANS le "o", domaine défensif déjà possédé, inutilisé) :
+# tableau de bord interne Hizope (Joyce uniquement), aucun rapport avec le produit
+# CMicrolocks. Protégé par Basic Auth (un seul compte) car pas de login applicatif
+# côté Hizope-pilotage-web — voir HIZOPE_PILOTAGE_BASIC_AUTH_HASH dans .env.
+cmicrlocks.fr, www.cmicrlocks.fr {
+    basic_auth {
+        joyce {env.HIZOPE_PILOTAGE_BASIC_AUTH_HASH}
+    }
+    handle /api/* {
+        reverse_proxy hizope-pilotage-api:8080
+    }
+    handle {
+        root * /srv/hizope-pilotage-website
+        try_files {path} /index.html
+        file_server
+    }
 }
