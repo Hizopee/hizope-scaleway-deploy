@@ -26,6 +26,16 @@ services:
       # HIZ-229 : cle partagee avec Hizope-pilotage-api pour api/platform/* (PAS le JWT
       # admin/employee/client -- voir PlatformKeyFilter cote CMicrolocks-backend).
       Platform__PilotageKey: ${CMICROLOCKS_PLATFORM_KEY}
+      # HIZ-214 : compte Stripe plateforme Hizope (destination charge desactivee au
+      # lancement -- Platform__UseConnect reste false par defaut dans appsettings.json,
+      # les acomptes atterrissent sur ce compte et sont reverses a Cecilia via l'outil
+      # Pilotage). WebhookSecret vient de l'endpoint Stripe configure sur
+      # https://api.cmicrolocks.fr/api/payments/stripe-webhook (evenements
+      # checkout.session.completed|expired|async_payment_failed).
+      Stripe__SecretKey: ${CMICROLOCKS_STRIPE_SECRET_KEY}
+      Stripe__PublishableKey: ${CMICROLOCKS_STRIPE_PUBLISHABLE_KEY}
+      Stripe__WebhookSecret: ${CMICROLOCKS_STRIPE_WEBHOOK_SECRET}
+      Integrations__UseRealPayments: "true"
     expose:
       - "8080"
 
