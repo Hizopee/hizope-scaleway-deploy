@@ -69,6 +69,11 @@ services:
       ASPNETCORE_ENVIRONMENT: Production
       CMicrolocks__BaseUrl: https://api.cmicrolocks.fr
       CMicrolocks__PlatformKey: ${CMICROLOCKS_PLATFORM_KEY}
+      # Lecture seule côté Stripe (liste des charges) : clé restreinte dédiée, distincte
+      # de CMICROLOCKS_STRIPE_SECRET_KEY (celle-ci crée de vrais paiements côté
+      # CMicrolocks-backend -- pas le même niveau de risque si elle fuit).
+      Stripe__SecretKey: ${HIZOPE_PILOTAGE_STRIPE_SECRET_KEY}
+      Stripe__TestSecretKey: ${HIZOPE_PILOTAGE_STRIPE_TEST_SECRET_KEY}
     expose:
       - "8080"
 
