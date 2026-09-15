@@ -36,6 +36,12 @@ services:
       Stripe__PublishableKey: ${CMICROLOCKS_STRIPE_PUBLISHABLE_KEY}
       Stripe__WebhookSecret: ${CMICROLOCKS_STRIPE_WEBHOOK_SECRET}
       Integrations__UseRealPayments: "true"
+      # HIZ-240 : sans ca, Storage:UploadsRootPath est absent et Program.cs retombe sur
+      # wwwroot -- a l'interieur de l'image Docker, donc entierement recree (photos
+      # perdues) a CHAQUE "docker compose up -d --build". /data est monte sur un volume
+      # nomme persistant ci-dessous ; Program.cs y ecrit sous /data/uploads/... et sert
+      # /uploads/* depuis ce meme dossier (cf. UseStaticFiles avec RequestPath "/uploads").
+      Storage__UploadsRootPath: /data
     expose:
       - "8080"
     volumes:
@@ -44,6 +50,8 @@ services:
       # regenerees a CHAQUE redeploiement du container -- probleme frequent vu le
       # rythme de deploiement actuel. Volume nomme = persiste entre les recreations.
       - cmicrolocks_dataprotection_keys:/root/.aspnet/DataProtection-Keys
+      # HIZ-240 : photos de profil / de reference -- meme probleme, meme remede.
+      - cmicrolocks_uploads:/data
 
   lovelist-api:
     build:
@@ -110,3 +118,4 @@ volumes:
   caddy_data:
   caddy_config:
   cmicrolocks_dataprotection_keys:
+  cmicrolocks_uploads:
