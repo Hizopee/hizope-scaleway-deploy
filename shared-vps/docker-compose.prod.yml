@@ -38,6 +38,12 @@ services:
       Integrations__UseRealPayments: "true"
     expose:
       - "8080"
+    volumes:
+      # HIZ-237 : sans ca, les cles ASP.NET Core Data Protection (utilisees par les
+      # cookies/tokens temporaires proteges par le framework) sont perdues et
+      # regenerees a CHAQUE redeploiement du container -- probleme frequent vu le
+      # rythme de deploiement actuel. Volume nomme = persiste entre les recreations.
+      - cmicrolocks_dataprotection_keys:/root/.aspnet/DataProtection-Keys
 
   lovelist-api:
     build:
@@ -103,3 +109,4 @@ services:
 volumes:
   caddy_data:
   caddy_config:
+  cmicrolocks_dataprotection_keys:
