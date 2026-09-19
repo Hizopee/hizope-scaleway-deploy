@@ -36,6 +36,11 @@ services:
       Stripe__PublishableKey: ${CMICROLOCKS_STRIPE_PUBLISHABLE_KEY}
       Stripe__WebhookSecret: ${CMICROLOCKS_STRIPE_WEBHOOK_SECRET}
       Integrations__UseRealPayments: "true"
+      # Integrations:UseRealPush reste true par defaut (appsettings.json) : sans cette
+      # variable, FirebaseAppInitializer leve une exception des qu'une notif push est
+      # envoyee (aucune des deux sources de cle -- Json ou Path -- n'etait cablee ici
+      # avant ce commit). Valeur = JSON complet du compte de service Firebase, minifie.
+      Firebase__ServiceAccountKeyJson: ${CMICROLOCKS_FIREBASE_KEY_JSON}
       # HIZ-240 : sans ca, Storage:UploadsRootPath est absent et Program.cs retombe sur
       # wwwroot -- a l'interieur de l'image Docker, donc entierement recree (photos
       # perdues) a CHAQUE "docker compose up -d --build". /data est monte sur un volume
