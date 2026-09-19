@@ -71,3 +71,11 @@ cmicrlocks.fr, www.cmicrlocks.fr {
         file_server
     }
 }
+
+# Site vitrine du studio (portfolio + contact) -- statique, aucune API, pas de build
+# pipeline (comme admin-website) : fichier copié a la main dans shared-vps/hizope-website/.
+hizope.fr, www.hizope.fr {
+    root * /srv/hizope-website
+    try_files {path} /index.html
+    file_server
+}
