@@ -72,6 +72,7 @@ services:
       ExternalApis__Igdb__ClientSecret: ${LOVELIST_IGDB_CLIENT_SECRET}
       ExternalApis__GoogleBooks__ApiKey: ${LOVELIST_GOOGLE_BOOKS_API_KEY}
       Admin__Key: ${LOVELIST_ADMIN_KEY}
+      Jwt__Key: ${LOVELIST_JWT_KEY}
       # Open Library n'a pas besoin de cle (API publique gratuite).
     expose:
       - "8080"
