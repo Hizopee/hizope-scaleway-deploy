@@ -54,6 +54,19 @@ lovelist.shop, www.lovelist.shop {
     file_server
 }
 
+# Environnement d'integration (branche "integration") -- accessible publiquement sans
+# mot de passe (contrairement a cmicrlocks.fr ci-dessous) : un compte de test applicatif
+# suffit pour que Joyce valide un dev en conditions reelles avant de merger sur main.
+api-int.lovelist.shop {
+    reverse_proxy lovelist-int-api:8080
+}
+
+lovelist-int.shop, www.lovelist-int.shop {
+    root * /srv/lovelist-int-website
+    try_files {path} /index.html
+    file_server
+}
+
 # HIZ-229 — cmicrlocks.fr (SANS le "o", domaine défensif déjà possédé, inutilisé) :
 # tableau de bord interne Hizope (Joyce uniquement), aucun rapport avec le produit
 # CMicrolocks. Protégé par Basic Auth (un seul compte) car pas de login applicatif
