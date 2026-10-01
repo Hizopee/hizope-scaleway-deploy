@@ -73,6 +73,10 @@ services:
       ExternalApis__GoogleBooks__ApiKey: ${LOVELIST_GOOGLE_BOOKS_API_KEY}
       Admin__Key: ${LOVELIST_ADMIN_KEY}
       Jwt__Key: ${LOVELIST_JWT_KEY}
+      Stripe__SecretKey: ${LOVELIST_STRIPE_SECRET_KEY}
+      Stripe__WebhookSecret: ${LOVELIST_STRIPE_WEBHOOK_SECRET}
+      Stripe__PriceMonthly: ${LOVELIST_STRIPE_PRICE_MONTHLY}
+      Stripe__PriceYearly: ${LOVELIST_STRIPE_PRICE_YEARLY}
       # Open Library n'a pas besoin de cle (API publique gratuite).
     expose:
       - "8080"
