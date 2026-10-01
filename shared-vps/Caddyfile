@@ -61,7 +61,7 @@ api-int.lovelist.shop {
     reverse_proxy lovelist-int-api:8080
 }
 
-lovelist-int.shop, www.lovelist-int.shop {
+int.lovelist.shop {
     root * /srv/lovelist-int-website
     try_files {path} /index.html
     file_server
