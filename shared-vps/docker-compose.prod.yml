@@ -81,6 +81,40 @@ services:
     expose:
       - "8080"
 
+  # Environnement d'integration LoveList (branche "integration", pas "main") -- pour
+  # valider en conditions reelles (Stripe en mode test) avant de merger sur main/prod.
+  # Build context = un checkout SEPARE du repo (voir deploy-integration.yml), jamais le
+  # meme dossier que lovelist-api -- sinon un deploiement ecraserait l'autre en pleine
+  # construction d'image.
+  lovelist-int-api:
+    build:
+      context: ../../LoveList-backend-integration
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__Default: ${LOVELIST_INT_DB_CONNECTION}
+      ExternalApis__Tmdb__ApiKey: ${LOVELIST_TMDB_API_KEY}
+      ExternalApis__Omdb__ApiKey: ${LOVELIST_OMDB_API_KEY}
+      ExternalApis__Igdb__ClientId: ${LOVELIST_IGDB_CLIENT_ID}
+      ExternalApis__Igdb__ClientSecret: ${LOVELIST_IGDB_CLIENT_SECRET}
+      ExternalApis__GoogleBooks__ApiKey: ${LOVELIST_GOOGLE_BOOKS_API_KEY}
+      Admin__Key: ${LOVELIST_ADMIN_KEY}
+      Jwt__Key: ${LOVELIST_INT_JWT_KEY}
+      # index 0 (localhost) vient deja d'appsettings.Production.json -- on remplace les
+      # index 1/2 (lovelist.shop prod) par le domaine d'integration pour ce conteneur.
+      Cors__AllowedOrigins__1: https://lovelist-int.shop
+      Cors__AllowedOrigins__2: https://www.lovelist-int.shop
+      App__FrontendUrl: https://lovelist-int.shop
+      # Cles Stripe TEST (jamais les cles live de lovelist-api ci-dessus) -- Price ID
+      # specifiques au mode test, distincts de LOVELIST_STRIPE_PRICE_MONTHLY/YEARLY (live).
+      Stripe__SecretKey: ${LOVELIST_INT_STRIPE_SECRET_KEY}
+      Stripe__WebhookSecret: ${LOVELIST_INT_STRIPE_WEBHOOK_SECRET}
+      Stripe__PriceMonthly: ${LOVELIST_INT_STRIPE_PRICE_MONTHLY}
+      Stripe__PriceYearly: ${LOVELIST_INT_STRIPE_PRICE_YEARLY}
+    expose:
+      - "8080"
+
   # HIZ-229 -- tableau de bord interne Hizope (Joyce uniquement), servi sur cmicrlocks.fr
   # (domaine defensif inutilise, sans rapport avec le produit CMicrolocks). Agrege les
   # routes api/platform/* de chaque backend produit (CMicrolocks pour l'instant).
@@ -116,6 +150,7 @@ services:
       - ./admin-website:/srv/admin-website:ro
       - ./cmicrolocks-website:/srv/cmicrolocks-website:ro
       - ./lovelist-website:/srv/lovelist-website:ro
+      - ./lovelist-int-website:/srv/lovelist-int-website:ro
       - ./hizope-pilotage-website:/srv/hizope-pilotage-website:ro
       - ./hizope-website:/srv/hizope-website:ro
       - caddy_data:/data
@@ -123,6 +158,7 @@ services:
     depends_on:
       - cmicrolocks-api
       - lovelist-api
+      - lovelist-int-api
       - hizope-pilotage-api
 
 volumes:
