@@ -101,11 +101,11 @@ services:
       ExternalApis__GoogleBooks__ApiKey: ${LOVELIST_GOOGLE_BOOKS_API_KEY}
       Admin__Key: ${LOVELIST_ADMIN_KEY}
       Jwt__Key: ${LOVELIST_INT_JWT_KEY}
-      # index 0 (localhost) vient deja d'appsettings.Production.json -- on remplace les
-      # index 1/2 (lovelist.shop prod) par le domaine d'integration pour ce conteneur.
-      Cors__AllowedOrigins__1: https://lovelist-int.shop
-      Cors__AllowedOrigins__2: https://www.lovelist-int.shop
-      App__FrontendUrl: https://lovelist-int.shop
+      # index 0 (localhost) vient deja d'appsettings.Production.json -- on remplace
+      # l'index 1 (lovelist.shop prod) par le sous-domaine d'integration pour ce
+      # conteneur (meme domaine racine que la prod, pas de nouveau nom de domaine).
+      Cors__AllowedOrigins__1: https://int.lovelist.shop
+      App__FrontendUrl: https://int.lovelist.shop
       # Cles Stripe TEST (jamais les cles live de lovelist-api ci-dessus) -- Price ID
       # specifiques au mode test, distincts de LOVELIST_STRIPE_PRICE_MONTHLY/YEARLY (live).
       Stripe__SecretKey: ${LOVELIST_INT_STRIPE_SECRET_KEY}
