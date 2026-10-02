@@ -1,0 +1,332 @@
+<html lang="fr"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hizope — Studio de développement</title>
+<meta name="description" content="Hizope conçoit et développe des solutions logicielles sur mesure — sites web, applications mobiles — pour des entreprises, et développe ses propres produits : CMicrolocks, LoveList, Gaia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Fraunces:ital,opsz,wght@1,9..144,500&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f3ee;
+    --surface: #ffffff;
+    --surface-alt: #ece7dc;
+    --border: #e1dcd1;
+    --ink: #16201f;
+    --ink-muted: #5c6866;
+    --accent: #16a085;
+    --accent-soft: #e2f3ee;
+    --accent-ink: #0c4a3d;
+    color-scheme: light;
+  }
+  /* Thème clair volontairement fixe, quel que soit le thème système du visiteur. */
+
+  * { box-sizing: border-box; }
+  html { text-wrap: balance; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Work Sans", system-ui, sans-serif;
+    line-height: 1.5;
+    padding-inline: 24px;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  h1, h2, h3 { font-family: "Fraunces", Georgia, serif; text-wrap: balance; margin: 0; }
+
+  /* --- Header --- */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 22px;
+    border-bottom: 1px solid var(--border);
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .wordmark img {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border);
+  }
+  header nav {
+    display: flex;
+    gap: 28px;
+    font-size: 0.86rem;
+    font-weight: 500;
+  }
+  header nav a { color: var(--ink-muted); text-decoration: none; }
+  header nav a:hover { color: var(--ink); }
+
+  /* --- Hero --- */
+  .hero {
+    padding-block: 88px 72px;
+    max-width: 760px;
+  }
+  .hero h1 {
+    font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .hero p {
+    margin-top: 22px;
+    max-width: 52ch;
+    font-size: 1.1rem;
+    color: var(--ink-muted);
+  }
+  .hero-actions {
+    margin-top: 34px;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid transparent;
+  }
+  .btn-primary { background: var(--accent); color: var(--bg); }
+  .btn-secondary { border-color: var(--border); color: var(--ink); }
+
+  /* --- Section shell --- */
+  section { padding-block: 60px; border-top: 1px solid var(--border); }
+  .section-head { margin-bottom: 36px; }
+  .section-head h2 { font-size: 1.7rem; font-weight: 500; }
+  .section-head p { margin-top: 10px; color: var(--ink-muted); max-width: 56ch; }
+
+  /* --- Deux activités --- */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .split-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 28px;
+  }
+  .split-card .eyebrow { display: block; margin-bottom: 10px; }
+  .split-card h3 { font-size: 1.25rem; font-weight: 500; margin-bottom: 10px; }
+  .split-card p { color: var(--ink-muted); font-size: 0.95rem; }
+
+  /* --- Portfolio --- */
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+  }
+  .product-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .product-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .product-card h3 { font-size: 1.15rem; font-weight: 500; }
+  .badge {
+    flex-none: 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.64rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .badge-live { background: var(--accent-soft); color: var(--accent-ink); }
+  .badge-soon { background: var(--surface-alt); color: var(--ink-muted); }
+  .product-card p { color: var(--ink-muted); font-size: 0.9rem; flex: 1; }
+  .product-card a.visit {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  /* --- Contact --- */
+  .contact-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .contact-box h2 { font-size: 1.5rem; font-weight: 500; }
+  .contact-box p { margin-top: 8px; color: var(--ink-muted); }
+
+  footer {
+    padding-block: 30px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.82rem;
+    color: var(--ink-muted);
+    border-top: 1px solid var(--border);
+  }
+  .legal-link { color: var(--ink-muted); text-decoration: underline; text-underline-offset: 2px; }
+  .legal-link:hover { color: var(--ink); }
+
+  .legal { padding-block: 0 40px; font-size: 0.82rem; color: var(--ink-muted); }
+  .legal summary { cursor: pointer; color: var(--ink-muted); list-style: none; }
+  .legal summary::-webkit-details-marker { display: none; }
+  .legal-body { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; max-width: 60ch; }
+  .legal-body a { color: var(--ink-muted); }
+
+  @media (max-width: 700px) {
+    .split { grid-template-columns: 1fr; }
+    .contact-box { flex-direction: column; align-items: flex-start; }
+    header nav { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <a class="wordmark" href="#top"><img src="logo.png" alt="">Hizope</a>
+    <nav>
+      <a href="#activites">Activités</a>
+      <a href="#produits">Produits</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <div class="hero" id="top">
+    <p class="eyebrow">Studio de développement · Lyon, France</p>
+    <h1>On conçoit des logiciels pour <em>vous</em>, et pour <em>nous</em>.</h1>
+    <p>Hizope développe des solutions numériques sur mesure — sites web, applications mobiles — pour des entreprises qui veulent digitaliser leur activité. En parallèle, on construit nos propres produits, de l'idée jusqu'au déploiement.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#contact">Discuter d'un projet</a>
+      <a class="btn btn-secondary" href="#produits">Voir nos produits</a>
+    </div>
+  </div>
+
+  <section id="activites">
+    <div class="section-head">
+      <h2>Deux façons de travailler avec nous</h2>
+      <p>Que vous ayez besoin d'un outil sur mesure ou que vous soyez curieux·se de ce qu'on construit de notre côté.</p>
+    </div>
+    <div class="split">
+      <div class="split-card">
+        <span class="eyebrow">Pour des tiers</span>
+        <h3>Solutions sur mesure</h3>
+        <p>Sites web, applications mobiles, outils de réservation, gestion clients, paiement sécurisé — conception, développement, hébergement et suivi technique assurés de bout en bout.</p>
+      </div>
+      <div class="split-card">
+        <span class="eyebrow">Nos produits</span>
+        <h3>Ce qu'on construit pour nous</h3>
+        <p>En parallèle des projets clients, on développe nos propres applications : réservation en ligne, suivi culturel à deux, et d'autres idées en cours d'incubation.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="produits">
+    <div class="section-head">
+      <h2>Nos produits</h2>
+      <p>Ce qu'on construit et qu'on fait vivre au quotidien.</p>
+    </div>
+    <div class="portfolio-grid">
+      <div class="product-card">
+        <div class="product-top">
+          <h3>CMicrolocks</h3>
+          <span class="badge badge-live">En ligne</span>
+        </div>
+        <p>Réservation en ligne pour un salon spécialisé locks &amp; microlocks — créneaux réels, acompte sécurisé par carte, suivi du rendez-vous jusqu'au jour J.</p>
+        <a class="visit" href="https://cmicrolocks.fr" target="_blank" rel="noopener">Voir le site ↗</a>
+      </div>
+      <div class="product-card">
+        <div class="product-top">
+          <h3>LoveList</h3>
+          <span class="badge badge-soon">Bêta privée</span>
+        </div>
+        <p>Un espace à deux pour recommander des films, séries, jeux et livres à son ou sa partenaire, suivre ce qu'on a vécu ensemble, et organiser ses soirées.</p>
+      </div>
+      <div class="product-card">
+        <div class="product-top">
+          <h3>Gaia</h3>
+          <span class="badge badge-soon">Bientôt sur Google Play</span>
+        </div>
+        <p>L'application de rencontre pensée pour les femmes aimant les femmes (WLW) — matching par IA, modes de rencontre adaptés, vérification vocale et modération pour une communauté sûre.</p>
+        <a class="visit" href="https://gaia-app.fr" target="_blank" rel="noopener">Voir le site ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact-box">
+      <div>
+        <h2>Un projet en tête ?</h2>
+        <p>Parlons de ce que vous voulez construire.</p>
+      </div>
+      <a class="btn btn-primary" href="mailto:contact@hizope.fr">Nous écrire</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Hizope — Lyon, France</span>
+    <span><a href="#mentions-legales" class="legal-link">Mentions légales</a> · Studio de développement logiciel</span>
+  </footer>
+
+  <details id="mentions-legales" class="legal">
+    <summary>Mentions légales</summary>
+    <div class="legal-body">
+      <p><strong>Éditrice</strong> — Sharon-Joyce Panthier, exerçant sous le nom commercial « Hizope », entreprise individuelle (auto-entrepreneur). SIRET : 903 576 841 00014. Siège social : Lempdes (63370), France.</p>
+      <p><strong>Directrice de la publication</strong> — Sharon-Joyce Panthier.</p>
+      <p><strong>Hébergement</strong> — Scaleway SAS, 8 rue de la Ville l'Évêque, 75008 Paris, France.</p>
+      <p><strong>Contact</strong> — <a href="mailto:admin@hizope.fr">admin@hizope.fr</a></p>
+    </div>
+  </details>
+
+</div>
+
+
+</body></html>
