@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Politique de confidentialité — Gaia</title>
+<meta name="description" content="Politique de confidentialité de l'application Gaia : données collectées, bases légales, droits RGPD.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFF8FB;
+    --surface: #FFFFFF;
+    --surface-variant: #F7EEF2;
+    --border: #E8DCE1;
+    --text-primary: #3A2A33;
+    --text-secondary: #8C6E7A;
+    --text-muted: #B49AA4;
+    --primary: #D96C90;
+    --primary-light: #EFA5BD;
+    --primary-dark: #B25575;
+    --accent-purple: #D3A4FF;
+    --accent-peach: #FFC4D6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Exo 2', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  header { padding: 28px 0; }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 22px; color: inherit; text-decoration: none; }
+  .brand .g {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--primary); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-family: Georgia, serif; font-weight: 700; font-size: 19px;
+  }
+  nav a { color: var(--text-secondary); text-decoration: none; font-weight: 600; margin-left: 28px; font-size: 15px; }
+  nav a:hover { color: var(--primary-dark); }
+
+  .legal-doc { max-width: 760px; padding: 24px 24px 80px; margin: 0 auto; }
+  .legal-doc h1 { font-size: 34px; font-weight: 700; margin-bottom: 6px; }
+  .legal-doc .updated { color: var(--text-muted); font-size: 14px; margin-bottom: 36px; }
+
+  .notice {
+    background: var(--surface-variant);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 20px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+  }
+  .notice strong { color: var(--text-primary); }
+  .notice ul { margin: 8px 0 0 18px; }
+
+  .legal-doc h2 { font-size: 21px; font-weight: 700; margin: 40px 0 14px; color: var(--primary-dark); }
+  .legal-doc h3 { font-size: 16px; font-weight: 700; margin: 24px 0 8px; }
+  .legal-doc p { margin-bottom: 14px; font-size: 15px; }
+  .legal-doc ul { margin: 0 0 14px 20px; font-size: 15px; }
+  .legal-doc li { margin-bottom: 6px; }
+  .legal-doc a { color: var(--primary-dark); }
+
+  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { color: var(--text-secondary); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700; }
+
+  .back-link { display: inline-block; margin-bottom: 24px; font-size: 14px; font-weight: 600; color: var(--text-secondary); text-decoration: none; }
+  .back-link:hover { color: var(--primary-dark); }
+
+  footer { padding: 60px 0 40px; color: var(--text-muted); font-size: 13.5px; }
+  footer .cols { display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; margin-bottom: 32px; }
+  footer h4 { color: var(--text-secondary); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px; }
+  footer a { color: var(--text-muted); text-decoration: none; display: block; margin-bottom: 8px; }
+  footer a:hover { color: var(--primary-dark); }
+  footer .legal { border-top: 1px solid var(--border); padding-top: 24px; }
+  footer .legal p { margin-bottom: 4px; }
+
+  @media (max-width: 640px) {
+    .legal-doc h1 { font-size: 27px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="/"><span class="g">G</span> Gaia</a>
+    <nav>
+      <a href="/#a-propos">À propos</a>
+      <a href="/#fonctionnalites">Fonctionnalités</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="legal-doc">
+  <a class="back-link" href="/">← Retour à l'accueil</a>
+  <h1>Politique de confidentialité</h1>
+  <p class="updated">Dernière mise à jour : 02/10/2026</p>
+
+  <div class="notice">
+    <strong>Avant publication finale :</strong> ce document doit être relu et validé par un avocat ou un DPO, en particulier sur :
+    <ul>
+      <li>la qualification juridique exacte de la vérification vocale (donnée biométrique au sens de l'art. 9 RGPD) ;</li>
+      <li>le mécanisme de recueil du consentement explicite pour les données de catégorie particulière (orientation sexuelle, vie sexuelle) ;</li>
+      <li>la nécessité d'une AIPD (Analyse d'Impact relative à la Protection des Données) avant le lancement.</li>
+    </ul>
+  </div>
+
+  <h2>1. Qui sommes-nous</h2>
+  <p><strong>PANTHIER SHARON-JOYCE</strong>, entrepreneure individuelle, SIREN 903576841, SIRET 903576841 00014, RCS Clermont-Ferrand, code APE 6201Z (programmation informatique), dont le siège est situé 8 Rue de la Fleurie, 63370 Lempdes, France, est responsable du traitement des données à caractère personnel collectées via l'application Gaia (ci-après « Gaia » ou « l'Application »).</p>
+  <p>Contact : <a href="mailto:contact@hizope.fr">contact@hizope.fr</a><br>
+  Contact protection des données (référent RGPD) : <a href="mailto:admin@hizope.fr">admin@hizope.fr</a></p>
+
+  <h2>2. Champ d'application</h2>
+  <p>Cette politique s'applique à toute personne utilisant l'Application Gaia, disponible sur Android (iOS à venir), et décrit les données que nous collectons et pourquoi, les bases légales sur lesquelles nous nous appuyons, avec qui ces données sont partagées, combien de temps elles sont conservées, et les droits dont vous disposez et comment les exercer.</p>
+
+  <h2>3. Les données que nous collectons</h2>
+
+  <h3>3.1 Données d'inscription et de profil</h3>
+  <table>
+    <tr><th>Donnée</th><th>Exemple</th><th>Finalité</th></tr>
+    <tr><td>Identité déclarative</td><td>prénom, date de naissance, photos</td><td>affichage du profil, vérification de l'âge (18+)</td></tr>
+    <tr><td>Genre et pronoms</td><td>identité de genre, pronoms</td><td>affichage du profil, personnalisation des accords grammaticaux</td></tr>
+    <tr><td>Orientation</td><td>orientation sexuelle et romantique (lesbienne, bie, pan, queer, ace-spectre, etc.)</td><td><strong>cœur du service</strong> — matching, filtrage des profils compatibles</td></tr>
+    <tr><td>Coordonnées</td><td>numéro de téléphone</td><td>création de compte, authentification (SMS via Firebase)</td></tr>
+  </table>
+
+  <h3>3.2 Données issues des tests IA propriétaires</h3>
+  <table>
+    <tr><th>Donnée</th><th>Exemple</th><th>Finalité</th></tr>
+    <tr><td>Réponses au test d'affinités physiques</td><td>réactions à des images d'archétypes</td><td>alimenter le moteur de préférences esthétiques</td></tr>
+    <tr><td>Réponses au test de personnalité</td><td>tempérament, valeurs, style d'attachement, mode relationnel</td><td>alimenter le score de compatibilité émotionnelle</td></tr>
+    <tr><td>Score de compatibilité émotionnelle</td><td>score interne, jamais affiché à l'utilisatrice</td><td>calcul du matching</td></tr>
+    <tr><td>Résultats des mini-tests réguliers</td><td>ex. duels photo</td><td>affinage continu des préférences</td></tr>
+  </table>
+
+  <h3>3.3 Vérification vocale (Safe WLW)</h3>
+  <p>Un enregistrement vocal court (~5 secondes) peut être demandé, dans un objectif de sécurité de la communauté. Cette fonctionnalité est <strong>optionnelle</strong>.</p>
+  <ul>
+    <li><strong>Traitement</strong> : aucune analyse automatisée ni service tiers — l'enregistrement confirme simplement qu'un échantillon vocal a bien été soumis. Il n'existe pas de reconnaissance ou classification de genre par IA à ce jour.</li>
+    <li><strong>Conservation</strong> : le fichier audio brut est conservé sur le serveur (jamais accessible publiquement) tant que le compte existe, et supprimé physiquement à la suppression du compte.</li>
+  </ul>
+
+  <h3>3.4 Données de conversation</h3>
+  <p>Messages échangés via le chat, horodatage, statut de lecture.</p>
+
+  <h3>3.5 Données techniques et d'usage</h3>
+  <p>Journaux applicatifs à des fins de sécurité (ex. tentatives de connexion), utilisation des fonctionnalités (matchs, tests complétés) — pas de tracking publicitaire ni d'analytics tiers (aucun SDK de ce type n'est intégré dans l'app).</p>
+
+  <h3>3.6 Géolocalisation</h3>
+  <p>Position précise (avec autorisation de l'appareil), utilisée pour proposer des profils à proximité (mode classique et mode Éphémère). Seule une distance approximative est montrée aux autres utilisatrices, jamais la position exacte.</p>
+
+  <h3>3.7 Données de paiement</h3>
+  <p>Aucun système de paiement n'est intégré à ce jour. Cette section sera complétée si une offre payante est mise en place.</p>
+
+  <h2>4. Pourquoi ces données sont-elles considérées comme sensibles ?</h2>
+  <p>L'orientation sexuelle et l'orientation romantique constituent des <strong>données sensibles</strong> au sens de l'<strong>article 9 du RGPD</strong> (« données révélant … la vie sexuelle ou l'orientation sexuelle d'une personne physique »). Leur traitement est en principe interdit, sauf exception — ici, le <strong>consentement explicite</strong> de l'utilisatrice, recueilli de façon spécifique et distincte des conditions générales.</p>
+  <p>En pratique, cela implique :</p>
+  <ul>
+    <li>une case à cocher dédiée (jamais pré-cochée) lors de l'inscription, séparée de l'acceptation des CGU ;</li>
+    <li>une information claire, avant la collecte, sur le fait que ces données seront utilisées pour le matching ;</li>
+    <li>la possibilité de retirer ce consentement à tout moment (voir section 10), ce qui entraîne la suppression du compte.</li>
+  </ul>
+  <p>Si la vérification vocale est qualifiée de donnée biométrique, le même régime de consentement explicite s'applique.</p>
+
+  <h2>5. Bases légales des traitements</h2>
+  <table>
+    <tr><th>Traitement</th><th>Base légale</th></tr>
+    <tr><td>Création de compte, fonctionnement du service</td><td>Exécution du contrat (art. 6.1.b)</td></tr>
+    <tr><td>Orientation sexuelle/romantique, vie sexuelle implicite</td><td>Consentement explicite (art. 9.2.a)</td></tr>
+    <tr><td>Vérification vocale (si biométrique)</td><td>Consentement explicite (art. 9.2.a)</td></tr>
+    <tr><td>Sécurité, lutte contre les faux profils, modération</td><td>Intérêt légitime (art. 6.1.f)</td></tr>
+    <tr><td>Obligations légales (facturation, lutte anti-fraude)</td><td>Obligation légale (art. 6.1.c)</td></tr>
+  </table>
+
+  <h2>6. Destinataires des données</h2>
+  <p>Les données sont accessibles :</p>
+  <ul>
+    <li>à Sharon-Joyce Panthier, seule à opérer le service à ce stade (modération, support) ;</li>
+    <li>à nos sous-traitants techniques : Scaleway (hébergement de la base de données et de l'API, région Paris, France), Google Firebase (authentification par SMS uniquement) ;</li>
+    <li>aux autorités compétentes, si la loi l'exige.</li>
+  </ul>
+  <p>Nous ne vendons ni ne louons vos données à des tiers à des fins publicitaires. Aucun SDK d'analyse ou de publicité tiers n'est intégré dans l'application.</p>
+
+  <h2>7. Transferts hors Union européenne</h2>
+  <p>L'hébergement principal (base de données, API) est assuré par Scaleway, société française, sur des infrastructures situées à Paris — les données restent donc en France, au sein de l'Union européenne.</p>
+  <p>Le numéro de téléphone transite par Firebase Authentication (Google) pour l'envoi du SMS de vérification uniquement. Google agit ici comme sous-traitant technique ; les clauses contractuelles types de la Commission européenne encadrent ce transfert le cas échéant.</p>
+
+  <h2>8. Durées de conservation</h2>
+  <table>
+    <tr><th>Donnée</th><th>Durée</th></tr>
+    <tr><td>Profil et compte actif</td><td>Durée de vie du compte</td></tr>
+    <tr><td>Compte supprimé</td><td>Suppression immédiate et définitive à la demande (Réglages → Supprimer mon compte) — aucune période de rétention</td></tr>
+    <tr><td>Enregistrement vocal brut</td><td>Durée de vie du compte, supprimé immédiatement avec le compte</td></tr>
+    <tr><td>Messages de chat</td><td>Durée de vie du compte (ou jusqu'au blocage de la personne concernée)</td></tr>
+    <tr><td>Logs techniques / sécurité</td><td>12 mois maximum</td></tr>
+  </table>
+
+  <h2>9. Sécurité des données</h2>
+  <p>Des mesures techniques et organisationnelles sont mises en œuvre pour protéger vos données, notamment :</p>
+  <ul>
+    <li>chiffrement des données en transit (HTTPS) ;</li>
+    <li>accès restreint aux données sensibles (orientation, vérification vocale) — un seul opérateur à ce stade ;</li>
+    <li>filtrage automatisé des faux profils sans intervention humaine systématique sur les données personnelles ;</li>
+    <li>mécanisme de blocage/signalement dans le chat, avec exclusion du matching une fois bloquée.</li>
+  </ul>
+
+  <h2>10. Vos droits</h2>
+  <p>Conformément au RGPD, vous disposez des droits suivants sur vos données :</p>
+  <ul>
+    <li><strong>Droit d'accès</strong> — obtenir une copie de vos données ;</li>
+    <li><strong>Droit de rectification</strong> — corriger des données inexactes ;</li>
+    <li><strong>Droit à l'effacement</strong> — demander la suppression de votre compte et de vos données (disponible directement dans l'app : Réglages → Supprimer mon compte) ;</li>
+    <li><strong>Droit à la limitation</strong> du traitement ;</li>
+    <li><strong>Droit à la portabilité</strong> de vos données ;</li>
+    <li><strong>Droit d'opposition</strong>, notamment aux traitements fondés sur l'intérêt légitime ;</li>
+    <li><strong>Droit de retirer votre consentement</strong> à tout moment, notamment concernant l'orientation sexuelle/romantique ou la vérification vocale, sans que cela affecte la licéité des traitements antérieurs.</li>
+  </ul>
+  <p>Pour exercer ces droits : <a href="mailto:admin@hizope.fr">admin@hizope.fr</a>. Vous disposez également du droit d'introduire une réclamation auprès de la <a href="https://www.cnil.fr" target="_blank" rel="noopener">CNIL</a> ou de toute autorité de contrôle compétente.</p>
+
+  <h2>11. Mineurs</h2>
+  <p>Gaia est réservée aux personnes majeures (18 ans et plus). L'âge est vérifié à l'inscription (côté application et côté serveur) et tout compte identifié comme appartenant à un mineur est supprimé.</p>
+
+  <h2>12. Cookies et traceurs</h2>
+  <p>Non applicable à ce jour — ce site ne dispose d'aucun suivi analytique ni cookie de traçage. Cette section sera complétée si un tel suivi est ajouté.</p>
+
+  <h2>13. Modifications de cette politique</h2>
+  <p>Cette politique peut être mise à jour. Toute modification substantielle vous sera notifiée dans l'Application avant son entrée en vigueur.</p>
+
+  <h2>14. Contact</h2>
+  <p>Pour toute question relative à cette politique ou à vos données personnelles : <a href="mailto:contact@hizope.fr">contact@hizope.fr</a></p>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>Gaia</h4>
+        <a href="/#a-propos">À propos</a>
+        <a href="/#fonctionnalites">Fonctionnalités</a>
+      </div>
+      <div>
+        <h4>Légal</h4>
+        <a href="/politique-de-confidentialite.html">Politique de confidentialité</a>
+        <a href="/#mentions-legales">Mentions légales</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="mailto:contact@hizope.fr">contact@hizope.fr</a>
+      </div>
+    </div>
+    <div class="legal">
+      <p><strong>Éditeur du site :</strong> PANTHIER SHARON-JOYCE (Hizope) — Entrepreneur individuel</p>
+      <p>SIREN 903576841 · SIRET 90357684100014 · RCS Clermont-Ferrand</p>
+      <p>8 Rue de la Fleurie, 63370 Lempdes, France</p>
+      <p style="margin-top:12px;">© 2026 Gaia — Tous droits réservés.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
