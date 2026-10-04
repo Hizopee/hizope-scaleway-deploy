@@ -77,6 +77,12 @@ services:
       Stripe__WebhookSecret: ${LOVELIST_STRIPE_WEBHOOK_SECRET}
       Stripe__PriceMonthly: ${LOVELIST_STRIPE_PRICE_MONTHLY}
       Stripe__PriceYearly: ${LOVELIST_STRIPE_PRICE_YEARLY}
+      # Comptes LoveList : e-mails (confirmation, mot de passe oublie) via Scaleway Transactional Email. Vides = les e-mails
+      # sont seulement ecrits dans les journaux de l'API (rien n'est envoye).
+      Email__SecretKey: ${LOVELIST_EMAIL_SECRET_KEY:-}
+      Email__ProjectId: ${LOVELIST_EMAIL_PROJECT_ID:-}
+      Email__FromAddress: ${LOVELIST_EMAIL_FROM_ADDRESS:-}
+      Email__FromName: LoveList
       # Open Library n'a pas besoin de cle (API publique gratuite).
     expose:
       - "8080"
@@ -112,6 +118,12 @@ services:
       Stripe__WebhookSecret: ${LOVELIST_INT_STRIPE_WEBHOOK_SECRET}
       Stripe__PriceMonthly: ${LOVELIST_INT_STRIPE_PRICE_MONTHLY}
       Stripe__PriceYearly: ${LOVELIST_INT_STRIPE_PRICE_YEARLY}
+      # Comptes LoveList : e-mails (confirmation, mot de passe oublie) via Scaleway Transactional Email. Vides = les e-mails
+      # sont seulement ecrits dans les journaux de l'API (rien n'est envoye).
+      Email__SecretKey: ${LOVELIST_EMAIL_SECRET_KEY:-}
+      Email__ProjectId: ${LOVELIST_EMAIL_PROJECT_ID:-}
+      Email__FromAddress: ${LOVELIST_EMAIL_FROM_ADDRESS:-}
+      Email__FromName: LoveList
     expose:
       - "8080"
 
