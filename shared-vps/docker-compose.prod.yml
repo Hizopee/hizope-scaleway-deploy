@@ -83,6 +83,8 @@ services:
       Email__ProjectId: ${LOVELIST_EMAIL_PROJECT_ID:-}
       Email__FromAddress: ${LOVELIST_EMAIL_FROM_ADDRESS:-}
       Email__FromName: LoveList
+      # Import Steam (cle API gratuite : https://steamcommunity.com/dev/apikey). Vide = import Steam indisponible.
+      Steam__ApiKey: ${LOVELIST_STEAM_API_KEY:-}
       # Open Library n'a pas besoin de cle (API publique gratuite).
     expose:
       - "8080"
@@ -124,6 +126,8 @@ services:
       Email__ProjectId: ${LOVELIST_EMAIL_PROJECT_ID:-}
       Email__FromAddress: ${LOVELIST_EMAIL_FROM_ADDRESS:-}
       Email__FromName: LoveList
+      # Import Steam (cle API gratuite : https://steamcommunity.com/dev/apikey). Vide = import Steam indisponible.
+      Steam__ApiKey: ${LOVELIST_STEAM_API_KEY:-}
     expose:
       - "8080"
 
