@@ -51,6 +51,17 @@ services:
       # nomme persistant ci-dessous ; Program.cs y ecrit sous /data/uploads/... et sert
       # /uploads/* depuis ce meme dossier (cf. UseStaticFiles avec RequestPath "/uploads").
       Storage__UploadsRootPath: /data
+      # HIZ-260 + emails equipe (nouvelle cliente, nouveau RDV) via Scaleway Transactional
+      # Email. Sans ces variables, le backend simule l'envoi (simple log) -- aucun email ne
+      # part. Port 587 obligatoire : SmtpEmailService se connecte en STARTTLS (465 = TLS
+      # implicite, incompatible). FromAddress doit etre sur le domaine verifie dans TEM.
+      Integrations__UseRealEmail: "true"
+      Email__SmtpHost: smtp.tem.scaleway.com
+      Email__SmtpPort: "587"
+      Email__SmtpUsername: ${CMICROLOCKS_SMTP_USERNAME}
+      Email__SmtpPassword: ${CMICROLOCKS_SMTP_PASSWORD}
+      Email__FromAddress: no-reply@cmicrolocks.fr
+      Email__FromName: CMicrolocks
     expose:
       - "8080"
     volumes:
