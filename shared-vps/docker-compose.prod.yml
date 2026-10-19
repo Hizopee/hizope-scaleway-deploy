@@ -8,7 +8,11 @@
 name: shared-vps
 
 services:
+  # Images construites par GitHub Actions dans chaque depot d'API et poussees sur ghcr.io :
+  # les deploiements font "pull" + "up --no-build", le VPS ne compile plus rien. "build:"
+  # reste en secours (docker compose build <service> a la main, depuis le checkout du depot).
   cmicrolocks-api:
+    image: ghcr.io/hizopee/cmicrolocks-api:main
     build:
       context: ../../CMicrolocks-backend
       dockerfile: Dockerfile
@@ -80,6 +84,7 @@ services:
       - cmicrolocks_uploads:/data
 
   lovelist-api:
+    image: ghcr.io/hizopee/lovelist-api:main
     build:
       context: ../../LoveList-backend
       dockerfile: Dockerfile
@@ -108,6 +113,7 @@ services:
   # meme dossier que lovelist-api -- sinon un deploiement ecraserait l'autre en pleine
   # construction d'image.
   lovelist-int-api:
+    image: ghcr.io/hizopee/lovelist-api:integration
     build:
       context: ../../LoveList-backend-integration
       dockerfile: Dockerfile
@@ -140,6 +146,7 @@ services:
   # (domaine defensif inutilise, sans rapport avec le produit CMicrolocks). Agrege les
   # routes api/platform/* de chaque backend produit (CMicrolocks pour l'instant).
   hizope-pilotage-api:
+    image: ghcr.io/hizopee/hizope-pilotage-api:main
     build:
       context: ../../Hizope-pilotage-api
       dockerfile: Dockerfile
