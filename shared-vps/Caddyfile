@@ -92,3 +92,14 @@ hizope.fr, www.hizope.fr {
     try_files {path} /index.html
     file_server
 }
+
+# Gaia (anciennement servie par gaia-vps). Les certificats HTTPS ne s'obtiennent qu'une fois
+# le DNS de gaia-app.fr pointé sur cette VPS : voir MIGRATION-GAIA.md.
+api.gaia-app.fr {
+    reverse_proxy gaia-api:8080
+}
+
+gaia-app.fr, www.gaia-app.fr {
+    root * /srv/gaia-website
+    file_server
+}

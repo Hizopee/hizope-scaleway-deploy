@@ -28,6 +28,11 @@ run_backup() {
   status=0
 
   for db in $BACKUP_DATABASES; do
+    # Base listée mais pas encore migrée (ex. GaiaDb avant le déménagement de Gaia).
+    if [ "$(psql -h postgres -U postgres -d postgres -tAc "select 1 from pg_database where datname = '$db'")" != "1" ]; then
+      echo "$(date -u +%FT%TZ) base absente, ignorée : $db"
+      continue
+    fi
     file="/backups/$db-$stamp.dump"
     if pg_dump -h postgres -U postgres -Fc -d "$db" -f "$file" \
       && s3 cp "$file" "s3://$BACKUP_S3_BUCKET/$db/$db-$stamp.dump" --only-show-errors; then
