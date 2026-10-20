@@ -24,8 +24,11 @@ case "${1:-}" in
   lovelist-int)
     SERVICE=lovelist-int-api; ENV_VAR=LOVELIST_INT_DB_CONNECTION
     DB=LoveListDb_Integration; ROLE=lovelist_int; PASS_VAR=LOVELIST_INT_PG_PASSWORD ;;
+  gaia)
+    SERVICE=gaia-api; ENV_VAR=GAIA_DB_CONNECTION
+    DB=GaiaDb; ROLE=gaia; PASS_VAR=GAIA_PG_PASSWORD ;;
   *)
-    echo "Usage : $0 <cmicrolocks|lovelist|lovelist-int>" >&2
+    echo "Usage : $0 <cmicrolocks|lovelist|lovelist-int|gaia>" >&2
     exit 1 ;;
 esac
 
@@ -77,6 +80,19 @@ echo "   cible  : $ROLE@postgres:5432/$DB (VPS)"
 echo "-- Vérifications"
 "${COMPOSE[@]}" exec -T postgres pg_isready -U postgres >/dev/null \
   || { echo "❌ Le conteneur postgres ne répond pas (docker compose up -d postgres)" >&2; exit 1; }
+
+# Base et utilisateur créés à la volée s'ils n'existent pas encore (appli ajoutée après le
+# premier démarrage de postgres, ex. Gaia : postgres/init/ ne s'exécute qu'une fois).
+psql_admin() { "${COMPOSE[@]}" exec -T postgres psql -U postgres -d postgres -v ON_ERROR_STOP=1 -tA "$@"; }
+if [ "$(psql_admin -c "select 1 from pg_roles where rolname = '$ROLE'")" != "1" ]; then
+  psql_admin -c "CREATE ROLE \"$ROLE\" LOGIN PASSWORD '$TARGET_PASS'" >/dev/null
+  echo "   utilisateur $ROLE créé"
+fi
+if [ "$(psql_admin -c "select 1 from pg_database where datname = '$DB'")" != "1" ]; then
+  psql_admin -c "CREATE DATABASE \"$DB\" OWNER \"$ROLE\"" >/dev/null
+  psql_admin -c "REVOKE ALL ON DATABASE \"$DB\" FROM PUBLIC" >/dev/null
+  echo "   base $DB créée"
+fi
 psql_source -c "select 1" >/dev/null \
   || { echo "❌ Connexion à la base managée impossible" >&2; exit 1; }
 existing=$(psql_target -c "select count(*) from pg_tables where schemaname not in ('pg_catalog','information_schema')")

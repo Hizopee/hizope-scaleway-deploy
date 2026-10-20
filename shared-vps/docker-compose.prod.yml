@@ -163,6 +163,25 @@ services:
     expose:
       - "8080"
 
+  # Gaia (anciennement seule sur gaia-vps) : meme image que le depot Gaia-backend construit
+  # sur GitHub. Procedure de demenagement : MIGRATION-GAIA.md.
+  gaia-api:
+    image: ghcr.io/hizopee/gaia-api:main
+    build:
+      context: ../../Gaia-backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: ${GAIA_DB_CONNECTION}
+      Jwt__Key: ${GAIA_JWT_KEY}
+    expose:
+      - "8080"
+    volumes:
+      # Photos de profil et enregistrements vocaux (Assets/Photos, Assets/VoiceVerifications) :
+      # sans volume, ils etaient perdus a chaque redeploiement sur gaia-vps.
+      - gaia_assets:/app/Assets
+
   # PostgreSQL auto-heberge (remplace les bases managees Scaleway, ~75 EUR HT/mois) : une
   # base + un utilisateur par application, crees au premier demarrage par
   # postgres/init/01-create-databases.sh. Jamais expose sur Internet (pas de "ports:"),
@@ -194,7 +213,7 @@ services:
     entrypoint: ["/bin/sh", "/backup.sh"]
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      BACKUP_DATABASES: "Microlocks LoveListDb LoveListDb_Integration"
+      BACKUP_DATABASES: "Microlocks LoveListDb LoveListDb_Integration GaiaDb"
       BACKUP_HOUR: "02"
       BACKUP_RETENTION_DAYS: "14"
       BACKUP_S3_BUCKET: ${BACKUP_S3_BUCKET}
@@ -225,6 +244,8 @@ services:
       - ./lovelist-int-website:/srv/lovelist-int-website:ro
       - ./hizope-pilotage-website:/srv/hizope-pilotage-website:ro
       - ./hizope-website:/srv/hizope-website:ro
+      # Site vitrine Gaia (meme contenu que sur gaia-vps, page exigee par la Play Console).
+      - ../gaia-vps/website:/srv/gaia-website:ro
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
@@ -240,3 +261,4 @@ volumes:
   cmicrolocks_uploads:
   postgres_data:
   db_backups:
+  gaia_assets:
