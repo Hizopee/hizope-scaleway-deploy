@@ -178,6 +178,9 @@ services:
       # CMicrolocks-backend -- pas le même niveau de risque si elle fuit).
       Stripe__SecretKey: ${HIZOPE_PILOTAGE_STRIPE_SECRET_KEY}
       Stripe__TestSecretKey: ${HIZOPE_PILOTAGE_STRIPE_TEST_SECRET_KEY}
+      # Moderation Gaia : appel interne sur le reseau Docker (jamais via Internet).
+      Gaia__BaseUrl: http://gaia-api:8080
+      Gaia__PlatformKey: ${GAIA_PLATFORM_KEY}
     expose:
       - "8080"
 
@@ -193,6 +196,10 @@ services:
       ASPNETCORE_ENVIRONMENT: Production
       ConnectionStrings__DefaultConnection: ${GAIA_DB_CONNECTION}
       Jwt__Key: ${GAIA_JWT_KEY}
+      # Cle partagee avec Hizope-pilotage-api pour api/platform/moderation/* (validation des
+      # nouvelles utilisatrices, signalements, verifications audio/video) -- PAS le JWT des
+      # utilisatrices. Vide => ces routes repondent 503.
+      Platform__PilotageKey: ${GAIA_PLATFORM_KEY}
     expose:
       - "8080"
     volumes:
