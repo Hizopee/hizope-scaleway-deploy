@@ -99,9 +99,6 @@ services:
     restart: unless-stopped
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      # Heure du salon (Guadeloupe, UTC-4) : les jobs comparent "maintenant" a l'heure
-      # locale des rendez-vous. Voir INTEGRATION-CMICROLOCKS.md (a valider ici avant la prod).
-      TZ: ${CMICROLOCKS_INT_TZ:-America/Guadeloupe}
       ConnectionStrings__DefaultConnection: ${CMICROLOCKS_INT_DB_CONNECTION}
       Jwt__Key: ${CMICROLOCKS_INT_JWT_KEY}
       Cors__AllowedOrigins__1: https://int.cmicrolocks.fr

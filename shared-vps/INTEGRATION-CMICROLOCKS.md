@@ -82,9 +82,3 @@ la liste d'attente…) :
 cd ~/hizope-scaleway-deploy/shared-vps
 docker compose -f docker-compose.prod.yml logs --tail 100 cmicrolocks-int-api | grep -i sms
 ```
-
-## Fuseau horaire
-
-Le conteneur est réglé sur `America/Guadeloupe` (variable `TZ`). Les rendez-vous sont saisis à
-l'heure du salon ; les tâches de fond (demande de confirmation à J-3, expiration, rappels) les
-comparent à l'heure « maintenant » du serveur, qui doit donc être l'heure du salon.
