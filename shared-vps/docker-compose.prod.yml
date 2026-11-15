@@ -85,6 +85,52 @@ services:
       # HIZ-240 : photos de profil / de reference -- meme probleme, meme remede.
       - cmicrolocks_uploads:/data
 
+  # Environnement d'integration CMicrolocks (branche "integration", pas "main") : espace
+  # de test pour Cecilia -- valide les correctifs/fonctionnalites AVANT la prod, sans
+  # toucher aux vraies clientes. Base Postgres SEPAREE (Microlocks_Integration, donnees de
+  # demo), Stripe en mode TEST, SMS/e-mails/push SIMULES (jamais envoyes). Pas de
+  # "depends_on" depuis caddy : la prod ne doit jamais dependre de ce conteneur.
+  # Procedure : INTEGRATION-CMICROLOCKS.md.
+  cmicrolocks-int-api:
+    image: ghcr.io/hizopee/cmicrolocks-api:integration
+    build:
+      context: ../../CMicrolocks-backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      # Heure du salon (Guadeloupe, UTC-4) : les jobs comparent "maintenant" a l'heure
+      # locale des rendez-vous. Voir INTEGRATION-CMICROLOCKS.md (a valider ici avant la prod).
+      TZ: ${CMICROLOCKS_INT_TZ:-America/Guadeloupe}
+      ConnectionStrings__DefaultConnection: ${CMICROLOCKS_INT_DB_CONNECTION}
+      Jwt__Key: ${CMICROLOCKS_INT_JWT_KEY}
+      Cors__AllowedOrigins__1: https://int.cmicrolocks.fr
+      Cors__AllowedOrigins__2: https://admin-int.cmicrolocks.fr
+      App__PublicBaseUrl: https://int.cmicrolocks.fr
+      App__AdminBaseUrl: https://admin-int.cmicrolocks.fr
+      App__PublicWebsiteUrl: https://int.cmicrolocks.fr
+      Stripe__SuccessUrl: https://int.cmicrolocks.fr/paiement/reussi
+      Stripe__CancelUrl: https://int.cmicrolocks.fr/paiement/annule
+      # Jeu de donnees de demo (cliente/RDV de test) et mot de passe admin d'integration.
+      Seed__DemoData: "true"
+      Seed__AdminPassword: ${CMICROLOCKS_INT_ADMIN_PASSWORD}
+      # Cles Stripe TEST uniquement (sk_test_..., pk_test_..., whsec_ de l'endpoint test).
+      Stripe__SecretKey: ${CMICROLOCKS_INT_STRIPE_SECRET_KEY:-}
+      Stripe__PublishableKey: ${CMICROLOCKS_INT_STRIPE_PUBLISHABLE_KEY:-}
+      Stripe__WebhookSecret: ${CMICROLOCKS_INT_STRIPE_WEBHOOK_SECRET:-}
+      # Sans cle Stripe test, le backend simule le paiement (aucun appel externe).
+      Integrations__UseRealPayments: ${CMICROLOCKS_INT_USE_REAL_PAYMENTS:-false}
+      # JAMAIS de vrais envois depuis l'integration : tout part dans les journaux de l'API.
+      Integrations__UseRealSms: "false"
+      Integrations__UseRealEmail: "false"
+      Integrations__UseRealPush: "false"
+      Storage__UploadsRootPath: /data
+    expose:
+      - "8080"
+    volumes:
+      - cmicrolocks_int_dataprotection_keys:/root/.aspnet/DataProtection-Keys
+      - cmicrolocks_int_uploads:/data
+
   lovelist-api:
     image: ghcr.io/hizopee/lovelist-api:main
     build:
@@ -265,6 +311,8 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - ./admin-website:/srv/admin-website:ro
       - ./cmicrolocks-website:/srv/cmicrolocks-website:ro
+      - ./admin-int-website:/srv/admin-int-website:ro
+      - ./cmicrolocks-int-website:/srv/cmicrolocks-int-website:ro
       - ./lovelist-website:/srv/lovelist-website:ro
       - ./lovelist-int-website:/srv/lovelist-int-website:ro
       - ./hizope-pilotage-website:/srv/hizope-pilotage-website:ro
@@ -284,6 +332,8 @@ volumes:
   caddy_config:
   cmicrolocks_dataprotection_keys:
   cmicrolocks_uploads:
+  cmicrolocks_int_dataprotection_keys:
+  cmicrolocks_int_uploads:
   postgres_data:
   db_backups:
   gaia_assets:

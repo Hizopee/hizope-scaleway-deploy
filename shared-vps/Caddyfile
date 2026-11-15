@@ -44,6 +44,43 @@ cmicrolocks.fr, www.cmicrolocks.fr {
     }
 }
 
+# Environnement d'integration CMicrolocks (branche "integration") : meme montage que la prod,
+# /api, /hubs et /uploads proxifies vers l'API d'integration sur chaque domaine (meme
+# origine, pas de CORS). Donnees de demo uniquement. Voir INTEGRATION-CMICROLOCKS.md.
+admin-int.cmicrolocks.fr {
+    handle /api/* {
+        reverse_proxy cmicrolocks-int-api:8080
+    }
+    handle /hubs/* {
+        reverse_proxy cmicrolocks-int-api:8080
+    }
+    handle /uploads/* {
+        reverse_proxy cmicrolocks-int-api:8080
+    }
+    handle {
+        root * /srv/admin-int-website
+        try_files {path} /index.html
+        file_server
+    }
+}
+
+int.cmicrolocks.fr {
+    handle /api/* {
+        reverse_proxy cmicrolocks-int-api:8080
+    }
+    handle /hubs/* {
+        reverse_proxy cmicrolocks-int-api:8080
+    }
+    handle /uploads/* {
+        reverse_proxy cmicrolocks-int-api:8080
+    }
+    handle {
+        root * /srv/cmicrolocks-int-website
+        try_files {path} /index.html
+        file_server
+    }
+}
+
 api.lovelist.shop {
     reverse_proxy lovelist-api:8080
 }
