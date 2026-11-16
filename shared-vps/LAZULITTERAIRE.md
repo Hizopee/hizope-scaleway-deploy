@@ -62,13 +62,19 @@ autres dépôts), pour que le workflow se connecte à la VPS.
 
 ### 6. Premier déploiement, puis Caddy
 
-Lancer le workflow « Images Docker » du dépôt (onglet Actions → Run workflow), ou pousser sur `main` : il construit
-les deux images puis les déploie. Ensuite, recharger Caddy une fois pour prendre en compte le nouveau domaine :
+Lancer le workflow « Images Docker et déploiement » du dépôt (onglet Actions → Run workflow), ou pousser sur `main` : il construit
+les deux images puis les déploie. Ensuite, **recréer** le conteneur Caddy une fois pour qu'il prenne en compte le nouveau domaine :
 
 ```bash
 cd ~/hizope-scaleway-deploy/shared-vps
-docker compose -f docker-compose.prod.yml exec caddy caddy reload --config /etc/caddy/Caddyfile
+docker compose -f docker-compose.prod.yml up -d --no-deps --force-recreate caddy
 ```
+
+**Pourquoi pas un simple `caddy reload` ?** Le `Caddyfile` est monté dans le conteneur comme un fichier unique. Un `git pull`
+remplace ce fichier par un nouveau (autre inode) : le conteneur continue de voir l'ancienne version, et `caddy reload` répond
+« config is unchanged » sans rien appliquer (aucun certificat n'est demandé, le HTTPS échoue avec une erreur TLS interne).
+Pour le vérifier : `docker compose -f docker-compose.prod.yml exec caddy grep -c revision.hizope.fr /etc/caddy/Caddyfile`
+doit afficher `1`. La recréation coupe les sites une à deux secondes. **Cette règle vaut pour tout changement du Caddyfile.**
 
 Vérification : `https://revision.hizope.fr/api/health` doit répondre `{"ok":true}`.
 
