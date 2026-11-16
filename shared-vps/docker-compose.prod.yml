@@ -157,6 +157,9 @@ services:
       # Import Steam (cle API gratuite : https://steamcommunity.com/dev/apikey). Vide = import Steam indisponible.
       Steam__ApiKey: ${LOVELIST_STEAM_API_KEY:-}
       # Open Library n'a pas besoin de cle (API publique gratuite).
+      # Cle partagee avec Hizope-pilotage-api pour api/platform/logs (en-tete X-Platform-Key).
+      # Vide = route fermee (401), le reste de l'API fonctionne normalement.
+      Platform__PilotageKey: ${LOVELIST_PLATFORM_KEY:-}
     expose:
       - "8080"
 
@@ -224,6 +227,13 @@ services:
       # Moderation Gaia : appel interne sur le reseau Docker (jamais via Internet).
       Gaia__BaseUrl: http://gaia-api:8080
       Gaia__PlatformKey: ${GAIA_PLATFORM_KEY}
+      # Module LoveList du Pilotage : logs (meme cle que Platform__PilotageKey de lovelist-api,
+      # appel interne sur le reseau Docker) et resume Stripe 100 % Hizope (cles restreintes en
+      # lecture seule : Charges, Balance, Payouts). Vides = module affiche « non configure ».
+      LoveList__BaseUrl: http://lovelist-api:8080
+      LoveList__PlatformKey: ${LOVELIST_PLATFORM_KEY:-}
+      LoveList__Stripe__SecretKey: ${HIZOPE_PILOTAGE_LOVELIST_STRIPE_SECRET_KEY:-}
+      LoveList__Stripe__TestSecretKey: ${HIZOPE_PILOTAGE_LOVELIST_STRIPE_TEST_SECRET_KEY:-}
     expose:
       - "8080"
 
