@@ -250,6 +250,33 @@ services:
       # sans volume, ils etaient perdus a chaque redeploiement sur gaia-vps.
       - gaia_assets:/app/Assets
 
+  # Lazulitteraire (revision.hizope.fr) : revisions du CAPES de lettres modernes. Deux
+  # images construites sur GitHub (depot Hizopee/Lazulitteraire), jamais sur le VPS. Le
+  # conteneur web (nginx) sert le site Vue et relaie /api vers lazulitteraire-api.
+  # Procedure de mise en place : LAZULITTERAIRE.md.
+  lazulitteraire-api:
+    image: ghcr.io/hizopee/lazulitteraire-api:main
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      Storage__Provider: Postgres
+      ConnectionStrings__Default: ${REVISION_DB_CONNECTION}
+      # HMAC des codes d'acces et des cookies : le changer deconnecte tout le monde et
+      # invalide tous les codes. A conserver.
+      Auth__Secret: ${REVISION_AUTH_SECRET}
+      # Facultatif : "Contester la correction" (explication par Claude). Vide = desactive.
+      Sample__ApiKey: ${REVISION_ANTHROPIC_API_KEY:-}
+    mem_limit: 256m
+    expose:
+      - "8080"
+
+  lazulitteraire-web:
+    image: ghcr.io/hizopee/lazulitteraire-web:main
+    restart: unless-stopped
+    mem_limit: 64m
+    expose:
+      - "80"
+
   # PostgreSQL auto-heberge (remplace les bases managees Scaleway, ~75 EUR HT/mois) : une
   # base + un utilisateur par application, crees au premier demarrage par
   # postgres/init/01-create-databases.sh. Jamais expose sur Internet (pas de "ports:"),
@@ -281,7 +308,7 @@ services:
     entrypoint: ["/bin/sh", "/backup.sh"]
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      BACKUP_DATABASES: "Microlocks LoveListDb LoveListDb_Integration GaiaDb"
+      BACKUP_DATABASES: "Microlocks LoveListDb LoveListDb_Integration GaiaDb revision"
       BACKUP_HOUR: "02"
       BACKUP_RETENTION_DAYS: "14"
       BACKUP_S3_BUCKET: ${BACKUP_S3_BUCKET}

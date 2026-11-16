@@ -130,6 +130,13 @@ hizope.fr, www.hizope.fr {
     file_server
 }
 
+# Lazulitteraire : site Vue + API (le conteneur nginx relaie /api vers l'API). Le certificat
+# HTTPS n'est obtenu qu'une fois l'enregistrement DNS A "revision" cree. Voir LAZULITTERAIRE.md.
+revision.hizope.fr {
+    encode zstd gzip
+    reverse_proxy lazulitteraire-web:80
+}
+
 # Gaia (anciennement servie par gaia-vps). Les certificats HTTPS ne s'obtiennent qu'une fois
 # le DNS de gaia-app.fr pointé sur cette VPS : voir MIGRATION-GAIA.md.
 api.gaia-app.fr {
