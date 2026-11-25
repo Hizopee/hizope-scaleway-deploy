@@ -260,12 +260,18 @@ services:
       # nouvelles utilisatrices, signalements, verifications audio/video) -- PAS le JWT des
       # utilisatrices. Vide => ces routes repondent 503.
       Platform__PilotageKey: ${GAIA_PLATFORM_KEY}
+      # Identifiants Firebase Admin (connexion par telephone et notifications push) : fichier monte
+      # depuis le VPS, plus embarque dans l'image (voir Gaia-backend/docs/SECRETS.md).
+      # Le fichier /root/secrets/gaia-firebase-admin.json DOIT exister avant de relancer gaia-api :
+      # sinon Docker cree un dossier a sa place et la connexion Firebase reste cassee.
+      Firebase__CredentialsPath: /run/secrets/firebase-admin.json
     expose:
       - "8080"
     volumes:
       # Photos de profil et enregistrements vocaux (Assets/Photos, Assets/VoiceVerifications) :
       # sans volume, ils etaient perdus a chaque redeploiement sur gaia-vps.
       - gaia_assets:/app/Assets
+      - /root/secrets/gaia-firebase-admin.json:/run/secrets/firebase-admin.json:ro
 
   # Lazulitteraire (revision.hizope.fr) : revisions du CAPES de lettres modernes. Deux
   # images construites sur GitHub (depot Hizopee/Lazulitteraire), jamais sur le VPS. Le
