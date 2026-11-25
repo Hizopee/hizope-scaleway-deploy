@@ -48,6 +48,11 @@ services:
       # checkout.session.completed|expired|async_payment_failed).
       Stripe__SecretKey: ${CMICROLOCKS_STRIPE_SECRET_KEY}
       Stripe__PublishableKey: ${CMICROLOCKS_STRIPE_PUBLISHABLE_KEY}
+      # Stripe Connect : acomptes payes au nom du salon (page de paiement "CMicrolocks"),
+      # verses sur le compte connecte de Cecilia, commission 10 % retenue pour Hizope.
+      # Ne s'applique qu'une fois le compte du salon valide par Stripe (Parametres ->
+      # Paiements dans l'admin) ; avant, les acomptes restent sur le compte plateforme.
+      Platform__UseConnect: ${CMICROLOCKS_USE_CONNECT:-false}
       Stripe__WebhookSecret: ${CMICROLOCKS_STRIPE_WEBHOOK_SECRET}
       Integrations__UseRealPayments: "true"
       # Integrations:UseRealPush reste true par defaut (appsettings.json) : sans cette
@@ -115,6 +120,8 @@ services:
       Stripe__SecretKey: ${CMICROLOCKS_INT_STRIPE_SECRET_KEY:-}
       Stripe__PublishableKey: ${CMICROLOCKS_INT_STRIPE_PUBLISHABLE_KEY:-}
       Stripe__WebhookSecret: ${CMICROLOCKS_INT_STRIPE_WEBHOOK_SECRET:-}
+      # Stripe Connect en mode test (compte connecte de test cree depuis admin-int).
+      Platform__UseConnect: ${CMICROLOCKS_INT_USE_CONNECT:-false}
       # Sans cle Stripe test, le backend simule le paiement (aucun appel externe).
       Integrations__UseRealPayments: ${CMICROLOCKS_INT_USE_REAL_PAYMENTS:-false}
       # JAMAIS de vrais envois depuis l'integration : tout part dans les journaux de l'API.
