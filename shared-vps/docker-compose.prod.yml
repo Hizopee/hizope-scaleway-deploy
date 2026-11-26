@@ -265,6 +265,11 @@ services:
       # Le fichier /root/secrets/gaia-firebase-admin.json DOIT exister avant de relancer gaia-api :
       # sinon Docker cree un dossier a sa place et la connexion Firebase reste cassee.
       Firebase__CredentialsPath: /run/secrets/firebase-admin.json
+      # Premier compte de l'administration (gaia-app.fr/admin) : cree au demarrage s'il n'existe pas, sans effet ensuite.
+      # Vides => aucun compte cree. A retirer du .env une fois le compte cree. Voir ADMIN-GAIA.md.
+      Admin__BootstrapUsername: ${GAIA_ADMIN_USERNAME:-}
+      Admin__BootstrapDisplayName: ${GAIA_ADMIN_DISPLAY_NAME:-}
+      Admin__BootstrapPasswordHash: ${GAIA_ADMIN_PASSWORD_HASH:-}
     expose:
       - "8080"
     volumes:

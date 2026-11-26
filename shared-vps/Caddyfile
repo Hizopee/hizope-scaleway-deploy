@@ -140,10 +140,21 @@ revision.hizope.fr {
 # Gaia (anciennement servie par gaia-vps). Les certificats HTTPS ne s'obtiennent qu'une fois
 # le DNS de gaia-app.fr pointé sur cette VPS : voir MIGRATION-GAIA.md.
 api.gaia-app.fr {
+    # L'administration n'est jamais servie depuis l'adresse de l'API de l'application : elle vit sur gaia-app.fr/admin.
+    @admin path /admin /admin/* /api/admin /api/admin/*
+    respond @admin 404
     reverse_proxy gaia-api:8080
 }
 
 gaia-app.fr, www.gaia-app.fr {
-    root * /srv/gaia-website
-    file_server
+    # Administration (site Vue embarque dans l'image gaia-api, voir Gaia-backend/docs/ADMINISTRATION.md) et ses routes :
+    # meme origine, donc le cookie de session et la protection CSRF fonctionnent sans CORS.
+    @admin path /admin /admin/* /api/admin/*
+    handle @admin {
+        reverse_proxy gaia-api:8080
+    }
+    handle {
+        root * /srv/gaia-website
+        file_server
+    }
 }
